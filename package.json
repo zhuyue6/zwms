@@ -1,0 +1,38 @@
+{
+  "name": "zwms",
+  "version": "1.0.0",
+  "description": "",
+  "packageManager": "pnpm@7.32.0",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged --quiet",
+    "dev": "node scripts/dev.js"
+  },
+  "author": "zhuyue",
+  "type": "module",
+  "license": "ISC",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,vue}": [
+      "prettier --write"
+    ],
+    "*.{yaml,json,css,less,scss}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.21",
+    "chalk": "^5.3.0",
+    "fs-extra": "^11.2.0",
+    "husky": "^9.0.11",
+    "inquirer": "^9.2.15",
+    "inquirer-search-list": "^1.2.6",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

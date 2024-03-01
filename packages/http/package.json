@@ -1,0 +1,22 @@
+{
+  "name": "@zwms/http",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    },
+    "./src": {
+      "import": "./src/index.ts"
+    }
+  },
+  "app": "false",
+  "author": "zhuyue",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.7"
+  }
+}

@@ -20,6 +20,7 @@
     "@zwms/http": "workspace:^",
     "element-plus": "^2.5.6",
     "sass": "^1.71.1",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   }
 }

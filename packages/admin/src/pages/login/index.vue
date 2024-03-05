@@ -3,7 +3,9 @@
 </template>
 
 <script setup lang="ts">
-  import { get, post } from '@/http'
-  get('http://127.0.0.1:3000/api/user/login', { aaa: 1111 })
-  post('http://127.0.0.1:3000/api/user/register', { name: 2222 })
+import { get, post } from '@/http'
+get('http://127.0.0.1:3000/api/user/login', {
+  name: 'root',
+  password: '123456',
+})
 </script>

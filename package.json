@@ -15,6 +15,7 @@
   "license": "ISC",
   "lint-staged": {
     "*.{ts,tsx,js,jsx,vue}": [
+      "eslint --fix",
       "prettier --write"
     ],
     "*.{yaml,json,css,less,scss}": [

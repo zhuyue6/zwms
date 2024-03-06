@@ -8,7 +8,8 @@
     "prepare": "husky install",
     "lint-staged": "lint-staged --quiet",
     "dev": "node scripts/dev.js",
-    "service": "pnpm --filter @zwms/service dev"
+    "service": "pnpm --filter @zwms/service dev",
+    "build": "node scripts/build.js"
   },
   "author": "zhuyue",
   "type": "module",
@@ -23,6 +24,11 @@
     ]
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.11.21",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
@@ -35,6 +41,8 @@
     "inquirer-search-list": "^1.2.6",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
+    "rollup": "^4.12.0",
+    "rollup-plugin-dts": "^6.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },

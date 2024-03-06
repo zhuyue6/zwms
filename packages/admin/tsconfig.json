@@ -16,11 +16,6 @@
       ]
     }
   },
-  "references": [
-    {
-      "path": "../http"
-    }
-  ],
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

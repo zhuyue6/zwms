@@ -1,29 +1,23 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
     "esModuleInterop": true,
     "allowJs": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@zwms/*": [
-        "../*/src"
-      ]
+      "@/*": ["src/*"],
+      "@zwms/*": ["../*/src"]
     }
   },
-  "references": [
-    {
-      "path": "../http"
-    }
-  ],
   "include": ["src/**/*"],
   "exclude": ["node_modules"],
   "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    },
     "require": ["tsconfig-paths/register"]
   }
 }

@@ -8,19 +8,10 @@
     "allowJs": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@zwms/*": [
-        "../*/src"
-      ]
+      "@/*": ["src/*"],
+      "@zwms/*": ["../*/src"]
     }
   },
-  "references": [
-    {
-      "path": "../http"
-    }
-  ],
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

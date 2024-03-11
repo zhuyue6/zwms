@@ -12,25 +12,25 @@ function compile(name) {
   const packageJson = fsExtra.readJSONSync(`packages/${name}/package.json`)
   if (packageJson?.scripts?.build) {
     const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
-    return spawn(pnpm, [
-      '--filter', 
-      `@zwms/${name}`, 
-      'build'
-    ], {
+    return spawn(pnpm, ['--filter', `@zwms/${name}`, 'build'], {
       stdio: [0, 1, 2],
     })
   }
   const cmd = process.platform === 'win32' ? 'npx.cmd' : 'npx'
-  spawn(cmd, [
-    'rollup', 
-    '--config', 
-    '../../rollup.config.js',
-    '--environment',
-    `PACKAGENAME:${name}${name === 'service' ? `,MODULENAME:cjs` : ''}`,
-  ], {
-    cwd: `packages/${name}`,
-    stdio: [0, 1, 2],
-  })
+  spawn(
+    cmd,
+    [
+      'rollup',
+      '--config',
+      '../../rollup.config.js',
+      '--environment',
+      `PACKAGENAME:${name}${name === 'service' ? `,MODULENAME:cjsmin` : ''}`,
+    ],
+    {
+      cwd: `packages/${name}`,
+      stdio: [0, 1, 2],
+    }
+  )
 }
 
 async function main() {

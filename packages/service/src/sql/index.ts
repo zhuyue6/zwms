@@ -4,7 +4,7 @@ let db: mysql.Pool | null = null
 let timer: null | NodeJS.Timeout = null
 const time = 1000 * 60 * 2
 
-interface SQLResponse {
+export interface SQLResponse {
   code: number
   message?: string
   data: any

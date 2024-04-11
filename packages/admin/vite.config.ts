@@ -17,6 +17,11 @@ export default defineConfig({
     host: true,
     port: 8080,
     cors: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+      }
+    }
   },
   plugins: [
     vuePlugin(),

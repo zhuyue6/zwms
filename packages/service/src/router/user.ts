@@ -5,7 +5,7 @@ const router = new Router();
 
 const userController = new UserController()
 
-router.get('/login', userController.login)
+router.post('/login', userController.login)
 
 router.post('/register', userController.register)
 

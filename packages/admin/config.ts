@@ -1,3 +1,4 @@
 export default {
-  title: "zw管理平台"
+  title: "ZWMS管理平台",
+  welcomeText: ["欢迎使用", "ZWMS"]
 }

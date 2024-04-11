@@ -1,0 +1,79 @@
+@mixin flex(
+  $justify-content: center,
+  $align-items: center,
+  $flex-direction: row,
+  $flex-wrap: wrap,
+  $flex-type: flex
+) {
+  display: $flex-type;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-wrap: $flex-wrap;
+}
+
+@mixin box(
+  $width: 100%,
+  $height: 100%,
+  $padding: null,
+  $box-sizing: border-box
+) {
+  width: $width;
+  height: $height;
+  box-sizing: $box-sizing;
+  @if $padding {
+    padding: $padding;
+  }
+}
+
+@mixin font(
+  $font-size: 12px,
+  $color: null,
+  $font-weight: null,
+  $line-height: null,
+  $font-family: null,
+  $text-shadow: null
+) {
+  font-size: $font-size;
+  @if $color {
+    color: $color;
+  }
+  @if $line-height {
+    line-height: $line-height;
+  }
+  @if $font-weight {
+    font-weight: $font-weight;
+  }
+  @if $font-family {
+    font-family: $font-family;
+  }
+  @if $text-shadow {
+    text-shadow: $text-shadow;
+  }
+}
+
+@mixin background(
+  $background-color: none,
+  $background-image: none,
+  $background-size: 100% 100%
+) {
+  background-color: $background-color;
+  background-image: $background-image;
+  background-size: $background-size;
+}
+
+@mixin overflowEllipsis($line: 1) {
+  white-space: nowrap;
+  overflow: hidden;
+  @if $line > 1 {
+    -webkit-line-clamp: $line;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  } @else {
+    text-overflow: ellipsis;
+  }
+}
+
+@function backgroundFill($url) {
+  @return url(#{$url}) 0 0/100% 100% no-repeat;
+}

@@ -1,0 +1,28 @@
+@use 'element-plus/theme-chalk/src/common/var';
+@use 'sass:map';
+@use 'sass:string';
+@use '../util';
+
+:export {
+  @each $key, $value in util.get-rules(var.$bg-color, 'el-bg-color') {
+    #{string.unquote($key)}: $value;
+  }
+  @each $key, $value in util.get-rules(var.$fill-color, 'el-fill-color') {
+    #{string.unquote($key)}: $value;
+  }
+  @each $key, $value in util.get-rules(var.$box-shadow, 'el-box-shadow') {
+    #{string.unquote($key)}: $value;
+  }
+  @each $key, $value in util.get-rules(var.$colors, 'el-color') {
+    #{string.unquote($key)}: $value;
+  }
+  @each $key, $value in util.get-rules(var.$text-color, 'el-text-color') {
+    #{string.unquote($key)}: $value;
+  }
+  @each $key, $value in util.get-rules(var.$mask-color, 'el-mask-color') {
+    #{string.unquote($key)}: $value;
+  }
+  @each $key, $value in util.get-rules(var.$border-color, 'el-border-color') {
+    #{string.unquote($key)}: $value;
+  }
+}

@@ -1,0 +1,15 @@
+@use 'sass:map';
+
+@function get-rules($color-group, $base-name) {
+  $rules: ();
+  @each $key, $value in $color-group {
+    @if type-of($value) == 'map' {
+      $rules: get-rules($value, '#{$base-name}-#{$key}');
+    } @else if $key != '' {
+      $rules: map.set($rules, '#{$base-name}-#{$key}', $value);
+    } @else {
+      $rules: map.set($rules, $base-name, $value);
+    }
+  }
+  @return $rules;
+}

@@ -16,7 +16,7 @@ export function getParams<T>(ctx: RouterContext): T | null {
 
 export interface ResponseInfo<T=null> {
   code: number
-  message: string
+  msg?: string
   data?: T 
 }
 

@@ -8,7 +8,7 @@
     "prepare": "husky install",
     "lint-staged": "lint-staged --quiet",
     "dev": "node scripts/dev.js",
-    "service": "pnpm --filter @zwms/service dev",
+    "service": "pnpm --filter @zwms/service start:dev",
     "build": "node scripts/build.js"
   },
   "author": "zhuyue",

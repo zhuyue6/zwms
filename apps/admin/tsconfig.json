@@ -8,9 +8,12 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": [
+        "./src/*",
+      ],
       "@zwms/*": [
-        "./apps/*/src",
-        "./packages/*/src"
+        "../../apps/*/src",
+        "../../packages/*/src"
       ]
     }
   },

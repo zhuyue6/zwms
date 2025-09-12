@@ -1,7 +1,7 @@
 import axios, {type AxiosRequestConfig} from 'axios'
 
 const http = axios.create({
-  timeout: 100000
+  timeout: 100000,
 })
 
 function get<T, P={}>(url: string, params: P, config?: AxiosRequestConfig) {

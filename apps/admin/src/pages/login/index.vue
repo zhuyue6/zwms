@@ -4,5 +4,5 @@
 
 <script setup lang="ts">
   import { user } from '@/api'
-  user.login()
+  user.register()
 </script>

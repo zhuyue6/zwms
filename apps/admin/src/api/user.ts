@@ -6,3 +6,10 @@ export function login() {
     password: '123456',
   })
 }
+
+export function register() {
+  return post('/user/register', {
+    name: 'zhuyue',
+    password: '123456',
+  })
+}

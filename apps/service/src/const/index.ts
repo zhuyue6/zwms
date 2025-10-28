@@ -1,1 +1,1 @@
-export * as jwt from './jwt'
+export * as reflector from './reflector'

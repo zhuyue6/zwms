@@ -22,15 +22,25 @@ export class UserService {
     });
 
     if (!user || password !== user.password) {
+      // 若不存在用户或者密码不一致则登录失败
       return {
         code: 10002,
         message: '用户名或密码错误',
         data: undefined
       }
     }
+    const payload = {
+      sub: user.id,
+      name: user.name
+    }
 
-    const access_token  = this.jwtService.sign({ name })
-    return access_token
+
+    // 登录成功，返回jwt_token
+    const access_token  = this.jwtService.sign(payload)
+    return { 
+      access_token,
+      user
+    }
   }
   async register(registerDto: RegisterDto) {
     const { name, password } = registerDto ?? {}

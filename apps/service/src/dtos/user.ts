@@ -1,8 +1,8 @@
 class UserInfo {
   name: string
+  age: number
   password: string;
 }
-
 
 export class LoginDto implements Pick<UserInfo, 'name'| 'password'> {
   name: string;

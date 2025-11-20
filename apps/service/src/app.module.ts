@@ -4,12 +4,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './modules/prisma.module';
-import { LoggerMiddleware  } from './common/loggers/logger.middleware'
+import { WinstonLoggerService  } from './common/loggers/winston.service'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
 import { JwtGuard } from './common/guards/jwt.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, PrismaModule],
+  imports: [UserModule, PrismaModule, ConfigModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_INTERCEPTOR,
@@ -17,12 +18,12 @@ import { JwtGuard } from './common/guards/jwt.guard';
   }, {
     provide: APP_GUARD,
     useClass: JwtGuard
-  }],
+  }, WinstonLoggerService],
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(LoggerMiddleware)
+      .apply()
       .forRoutes('user');
   }
 }

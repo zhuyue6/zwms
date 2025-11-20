@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/filter/http.filter'
+import { HttpExceptionFilter } from './common/filters/http.filter'
+import { WinstonLoggerService } from './common/loggers/winston.service'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,7 +11,9 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'], // 允许的请求头
     credentials: true, // 允许跨域请求携带 Cookie（需前端配合设置 withCredentials: true）
   });
-  app.useGlobalFilters(new HttpExceptionFilter())
+  const winstonLoggerService = app.get(WinstonLoggerService) // app.get是通过DI来获取服务
+  app.useGlobalFilters(new HttpExceptionFilter(winstonLoggerService))
+  app.useLogger(winstonLoggerService)
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

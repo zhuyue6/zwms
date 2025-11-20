@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, HttpException } from '@nestjs/common';
 import { UserService } from './user.service'
 import type { LoginDto, RegisterDto } from '../dtos/user'
 import { Public } from '../common/decorators'
@@ -20,6 +20,6 @@ export class UserController {
   }
   @Post('/test')
   test(@Body() registerDto: RegisterDto) {
-    return this.userService.register(registerDto);
+    throw new HttpException('1123', 404)
   }
 }

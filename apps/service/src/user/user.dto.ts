@@ -1,3 +1,6 @@
+import { Name, Password } from '../common/pipes/validator.pipe'
+
+// 
 class UserInfo {
   name: string
   age: number
@@ -10,6 +13,12 @@ export class LoginDto implements Pick<UserInfo, 'name'| 'password'> {
 }
 
 export class RegisterDto implements Pick<UserInfo, 'name'| 'password'> {
+  @Name()
   name: string;
+  @Password()
+  password: string;
+}
+
+export class UpdateDto implements Pick<UserInfo, 'password'> {
   password: string;
 }

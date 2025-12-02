@@ -1,6 +1,6 @@
-import { Body, Controller, Post, HttpException } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service'
-import type { LoginDto, RegisterDto } from '../dtos/user'
+import { LoginDto, RegisterDto, UpdateDto } from './user.dto'
 import { Public } from '../common/decorators'
 
 @Controller('user')
@@ -18,8 +18,9 @@ export class UserController {
   register(@Body() registerDto: RegisterDto) {
     return this.userService.register(registerDto);
   }
-  @Post('/test')
-  test(@Body() registerDto: RegisterDto) {
-    throw new HttpException('1123', 404)
+  @Public()
+  @Post('/update')
+  update(@Body() updateDto: UpdateDto) {
+    return this.userService.update(updateDto);
   }
 }

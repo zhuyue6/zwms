@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core'
 import { PrismaService } from '../modules/prisma.service';
-import type { LoginDto, RegisterDto } from '../dtos/user'
+import type { LoginDto, RegisterDto, UpdateDto } from './user.dto'
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {
+  constructor(private prisma: PrismaService, private jwtService: JwtService, @Inject(REQUEST) private readonly req: Request ) {
 
   }
 
@@ -40,6 +41,21 @@ export class UserService {
     return { 
       access_token,
       user
+    }
+  }
+  async update(updateDto: UpdateDto) {
+    const userId = (this.req as any).user?.userId
+    // 1. 查询用户是否存在
+    const user = await this.prisma.user.findFirst({
+      where: { id: userId },
+    });
+    if (user) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          password: updateDto.password
+        }
+      });
     }
   }
   async register(registerDto: RegisterDto) {

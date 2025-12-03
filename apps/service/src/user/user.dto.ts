@@ -1,4 +1,4 @@
-import { Name, Password } from '../common/pipes/validator.pipe'
+import { IsName, IsPassword } from '../common/pipes/validator.pipe'
 
 // 
 class UserInfo {
@@ -13,9 +13,9 @@ export class LoginDto implements Pick<UserInfo, 'name'| 'password'> {
 }
 
 export class RegisterDto implements Pick<UserInfo, 'name'| 'password'> {
-  @Name()
+  @IsName()
   name: string;
-  @Password()
+  @IsPassword()
   password: string;
 }
 

@@ -4,3 +4,5 @@ test/
 *.cache/
 components.d.ts
 auto-imports.d.ts
+
+uploads/

@@ -1,9 +1,13 @@
-import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { applyDecorators } from '@nestjs/common';
-
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 // 密码正则（基础强度）大小写特殊字符字母包含至少3种，长度8-32
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,32}$/;
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,32}$/;
 // 密码正则（基础强度）大小写特殊字符字母包含至少3种，长度8-32
 const NAME_REGEX = /^[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].{1,32}$/;
 
@@ -36,7 +40,6 @@ export function IsPassword(validationOptions?: ValidationOptions) {
   };
 }
 
-
 @ValidatorConstraint({ name: 'isName', async: false })
 export class IsNameConstraint implements ValidatorConstraintInterface {
   validate(password: string): boolean {
@@ -55,13 +58,13 @@ export class IsNameConstraint implements ValidatorConstraintInterface {
  * @param validationOptions 可选：自定义校验配置
  */
 export function IsName(validationOptions?: ValidationOptions) {
-    return function (object: object, propertyName: string) {
-      registerDecorator({
-        target: object.constructor,
-        propertyName: propertyName,
-        options: validationOptions,
-        constraints: [],
-        validator: IsNameConstraint,
-      });
-    };
-  }
+  return function (object: object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: IsNameConstraint,
+    });
+  };
+}

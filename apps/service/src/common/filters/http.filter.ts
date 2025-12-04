@@ -1,12 +1,18 @@
-import { ExceptionFilter, Catch, HttpException, ArgumentsHost } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  HttpException,
+  ArgumentsHost,
+} from '@nestjs/common';
 import { Response, Request } from 'express';
-import { WinstonLoggerService } from '../loggers/winston.service'
+import { WinstonLoggerService } from '../loggers/winston.service';
 
 interface ExceptionResponse {
-  message: string
-  code: number
+  message: string;
+  code: number;
 }
 
+// todo 监听除了http 异常的其余异常，包括服务器500
 // @Catch() 装饰器指定捕获 HttpException 及其子类
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -18,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus(); // 获取异常状态码
-    
+
     let message: string = '';
     let code: number = -1;
     const exceptionResponse = exception.getResponse(); // 获取抛出异常内容
@@ -29,12 +35,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message = exceptionResponse;
     }
 
-    const userIdMessage = (request?.user as any)?.userId ?  `userId: ${(request?.user as any).userId}` : ''
-    const errorMessage = `userId: ${userIdMessage}, ${message}`
+    const userIdMessage = (request?.user as any)?.userId
+      ? `userId: ${(request?.user as any).userId}`
+      : '';
+    const errorMessage = `userId: ${userIdMessage}, ${message}`;
 
+    this.logger.error(errorMessage);
 
-    this.logger.error(errorMessage)
-  
     const errorResponse = {
       data: {},
       message,

@@ -1,14 +1,18 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core'
+import { REQUEST } from '@nestjs/core';
 import { PrismaService } from '../modules/prisma.service';
-import type { LoginDto, RegisterDto, UpdateDto } from './user.dto'
+import type { LoginDto, RegisterDto, UpdateDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { OssService } from '../common/oss/oss.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService, @Inject(REQUEST) private readonly req: Request ) {
-
-  }
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private ossService: OssService,
+    @Inject(REQUEST) private readonly req: Request,
+  ) {}
 
   // jwt 原理
   // jwt 解决了什么问题
@@ -16,7 +20,7 @@ export class UserService {
   // jwt 是每一次通过header、payload组成的data生成的。只有保证每一次生成的signature 是同一个就通过验证
   async login(loginDto: LoginDto) {
     // 连接数据库，查询用户名和密码
-    const { name, password } = loginDto ?? {}
+    const { name, password } = loginDto ?? {};
     // 1. 查询用户是否存在
     const user = await this.prisma.user.findFirst({
       where: { name },
@@ -27,24 +31,23 @@ export class UserService {
       return {
         code: 10002,
         message: '用户名或密码错误',
-        data: undefined
-      }
+        data: undefined,
+      };
     }
     const payload = {
       sub: user.id,
-      name: user.name
-    }
-
+      name: user.name,
+    };
 
     // 登录成功，返回jwt_token
-    const access_token  = this.jwtService.sign(payload)
-    return { 
+    const access_token = this.jwtService.sign(payload);
+    return {
       access_token,
-      user
-    }
+      user,
+    };
   }
   async update(updateDto: UpdateDto) {
-    const userId = (this.req as any).user?.userId
+    const userId = (this.req as any).user?.userId;
     // 1. 查询用户是否存在
     const user = await this.prisma.user.findFirst({
       where: { id: userId },
@@ -53,13 +56,13 @@ export class UserService {
       await this.prisma.user.update({
         where: { id: userId },
         data: {
-          password: updateDto.password
-        }
+          password: updateDto.password,
+        },
       });
     }
   }
   async register(registerDto: RegisterDto) {
-    const { name, password } = registerDto ?? {}
+    const { name, password } = registerDto ?? {};
     // 1. 查询用户是否存在
     const user = await this.prisma.user.findFirst({
       where: { name },
@@ -68,8 +71,8 @@ export class UserService {
       return {
         code: 10001,
         message: '账号已存在',
-        data: undefined
-      }
+        data: undefined,
+      };
     }
     // 账号注册
     await this.prisma.user.create({
@@ -77,7 +80,22 @@ export class UserService {
         name,
         age: 10,
         password,
-      }
-    })
+      },
+    });
+  }
+  async uploaderAvatar(file: Express.Multer.File) {
+    const url = await this.ossService.saveFile(file, 'avatar');
+    const userId = (this.req as any).user?.userId;
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        avatarUrl: url,
+      },
+    });
+    return {
+      code: 10000,
+      message: '保存头像成功',
+      data: url,
+    };
   }
 }

@@ -10,15 +10,17 @@
   "author": "zhuyue",
   "license": "ISC",
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-vue": "^5.0.4",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4.1.18",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "vite": "^5.1.4"
   },
   "dependencies": {
-    "element-plus": "^2.5.6",
+    "element-plus": "^2.12.0",
+    "pinia": "^3.0.4",
     "sass": "^1.71.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"

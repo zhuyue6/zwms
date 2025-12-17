@@ -1,5 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -11,6 +11,7 @@ import { JwtGuard } from './common/guards/jwt.guard';
 import { ConfigModule } from '@nestjs/config';
 import { OssModule } from './common/oss/oss.module';
 import { memoryStorage } from 'multer';
+import { GlobalExceptionFilter } from './common/filters/global.filter';
 
 @Module({
   imports: [
@@ -33,6 +34,10 @@ import { memoryStorage } from 'multer';
     {
       provide: APP_GUARD,
       useClass: JwtGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
     },
     WinstonLoggerService,
   ],

@@ -26,3 +26,7 @@ export class UpdateDto implements Pick<UserInfo, 'password'> {
 export interface UploaderAvatarDto {
   url: string;
 }
+
+export {
+  UserInfo as UserInfoDto
+}

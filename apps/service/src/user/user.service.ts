@@ -39,10 +39,12 @@ export class UserService {
       name: user.name,
     };
 
+    Reflect.deleteProperty(user, password)
+
     // 登录成功，返回jwt_token
-    const access_token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
     return {
-      access_token,
+      token,
       user,
     };
   }
@@ -93,9 +95,19 @@ export class UserService {
       },
     });
     return {
-      code: 10000,
-      message: '保存头像成功',
-      data: url,
+      url
     };
+  }
+  async getInfo() {
+    const userId = (this.req as any).user?.userId;
+    const user = await this.prisma.user.findFirst({
+      where: { id: userId },
+    });
+    if (user) {
+      Reflect.deleteProperty(user, 'password')
+    }
+    return {
+      user
+    }
   }
 }

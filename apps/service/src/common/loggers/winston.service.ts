@@ -10,18 +10,18 @@ import { Injectable, LoggerService } from '@nestjs/common'
  * 2.实现输出的环境判定
  * 3.通用的输出点需要处理，如http filter里面的错误处理
  */
-export class WinstonLoggerService  implements LoggerService {
-    private logger: winston.Logger;
-    constructor(private configService: ConfigService) {
-        this.logger = winston.createLogger({
-            level: this.configService.get<string>('LOG_LEVEL') || 'info', // 从配置读取级别
-            format: winston.format.combine(
-              winston.format.timestamp(), // 时间戳
-              winston.format.json(), // 结构化JSON输出
-            ),
-            transports: this.getTransports(), // 输出目标（控制台、文件等）
-          });
-    }
+export class WinstonLoggerService implements LoggerService {
+  private logger: winston.Logger;
+  constructor(private configService: ConfigService) {
+    this.logger = winston.createLogger({
+      level: this.configService.get<string>('LOG_LEVEL') || 'info', // 从配置读取级别
+      format: winston.format.combine(
+        winston.format.timestamp(), // 时间戳
+        winston.format.json(), // 结构化JSON输出
+      ),
+      transports: this.getTransports(), // 输出目标（控制台、文件等）
+    });
+  }
      // 根据环境配置输出源
   private getTransports(): winston.transport[] {
     const transports: winston.transport[] = [];

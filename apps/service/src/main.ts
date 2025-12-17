@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/filters/http.filter';
 import { WinstonLoggerService } from './common/loggers/winston.service';
 import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -40,10 +39,9 @@ async function bootstrap() {
   const winstonLoggerServiceRef = app.get(WinstonLoggerService); // app.get是通过DI来获取服务
   // app.useXX 等全局注册，默认不支持 DI，必须「显式手动注入依赖」才能让 DI 生效。
   // 如果是通过 providers 配置 { provide: APP_* , useClass/useFactory }（如 APP_FILTER、APP_GUARD）—— 「DI 容器全局注册」。DI 默认是生效的
-  app.useGlobalFilters(new HttpExceptionFilter(winstonLoggerServiceRef));
   app.useLogger(winstonLoggerServiceRef);
   app.useStaticAssets(join(process.cwd(), 'uploads'), {
-    prefix: '/static/', // 访问前缀，如 /static/avatar/xxx.jpg
+    prefix: '/static/', // 访问前缀，如 /imgs/avatar/xxx.jpg
   });
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }

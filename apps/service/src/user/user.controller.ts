@@ -6,7 +6,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginDto, RegisterDto, UpdateDto } from './user.dto';
+import { LoginDto, RegisterDto, UpdateDto, UserInfoDto } from './user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Public } from '../common/decorators';
 
@@ -32,5 +32,9 @@ export class UserController {
   @Post('/uploaderAvatar')
   uploaderAvatar(@UploadedFile() file: Express.Multer.File) {
     return this.userService.uploaderAvatar(file);
+  }
+  @Post('/getInfo')
+  getInfo() {
+    return this.userService.getInfo();
   }
 }

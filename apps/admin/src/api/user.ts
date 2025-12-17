@@ -1,15 +1,16 @@
 import { get, post } from '../http'
-  
-export function login() {
-  return post('/user/login', {
-    name: 'root',
-    password: '123456',
-  })
+import { User } from '../types'
+
+type UserVerify = Pick<User, 'name' | 'password'>
+
+export function login(params: UserVerify) {
+  return post('/user/login', params)
 }
 
-export function register() {
-  return post('/user/register', {
-    name: 'zhuyue',
-    password: '123456',
-  })
+export function register(params: UserVerify) {
+  return post('/user/register', params)
+}
+
+export function getInfo() {
+  return post('/user/getInfo')
 }

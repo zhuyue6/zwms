@@ -1,4 +1,12 @@
-body, div, span, p, h1, h2, h3, h4, h5 {
+@use "tailwindcss";
+@use 'element-plus/dist/index.css';
+
+body, html{
   margin: 0;
   padding: 0;
+}
+
+html, body, #app {
+  width: 100%;
+  height: 100%;
 }

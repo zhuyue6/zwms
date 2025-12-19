@@ -4,6 +4,7 @@ import { PrismaService } from '../modules/prisma.service';
 import type { LoginDto, RegisterDto, UpdateDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { OssService } from '../common/oss/oss.service';
+import { TokenBlackListService } from '../common/blacklist/token.service'
 
 @Injectable()
 export class UserService {
@@ -11,13 +12,15 @@ export class UserService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private ossService: OssService,
+    private tokenBlackListService: TokenBlackListService,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
 
   // jwt 原理
   // jwt 解决了什么问题
-  // jwt header payload signature
+  // jwt header payload  signature
   // jwt 是每一次通过header、payload组成的data生成的。只有保证每一次生成的signature 是同一个就通过验证
+  // jwt 退出登录情况下，没有过期的token要加入黑名单
   async login(loginDto: LoginDto) {
     // 连接数据库，查询用户名和密码
     const { name, password } = loginDto ?? {};
@@ -47,6 +50,15 @@ export class UserService {
       token,
       user,
     };
+  }
+  async logout() {
+    const token: string = (this.req.headers as any)?.authorization?.replace('Bearer ', '')
+    if (token) {
+      await this.tokenBlackListService.add(token)
+    }
+    return {
+      message: '用户退出成功',
+    }
   }
   async update(updateDto: UpdateDto) {
     const userId = (this.req as any).user?.userId;

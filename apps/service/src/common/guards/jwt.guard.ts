@@ -11,7 +11,7 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
   constructor(private reflector: Reflector) {
     super(); // 继承AuthGuard('jwt')的逻辑（JWT验证核心）
   }
-  canActivate(context: ExecutionContext ) {
+  canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(), // 检查方法级装饰器（如@Post('login')上的@Public()）
       context.getClass(), // 检查类级装饰器（如整个Controller都无需认证）

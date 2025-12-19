@@ -6,7 +6,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginDto, RegisterDto, UpdateDto, UserInfoDto } from './user.dto';
+import { LoginDto, RegisterDto, UpdateDto } from './user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Public } from '../common/decorators';
 
@@ -17,6 +17,10 @@ export class UserController {
   @Post('/login')
   login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
+  }
+  @Post('/logout')
+  logout() {
+    return this.userService.logout();
   }
   @Public()
   @Post('/register')

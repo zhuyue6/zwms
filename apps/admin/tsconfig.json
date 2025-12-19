@@ -16,5 +16,5 @@
   },
   "include": ["packages/**/*"],
   "exclude": ["node_modules"],
-  "files": ["type.d.ts"]
+  "files": ["../../type.d.ts"]
 }

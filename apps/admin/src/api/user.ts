@@ -14,3 +14,7 @@ export function register(params: UserVerify) {
 export function getInfo() {
   return post('/user/getInfo')
 }
+
+export function logout() {
+  return post('/user/logout')
+}

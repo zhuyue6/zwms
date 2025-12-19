@@ -4,6 +4,9 @@ import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../common/strategies/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TokenBlackListService } from '../common/blacklist/token.service'
+
+
 @Module({
   imports: [
     ConfigModule,
@@ -19,6 +22,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [UserController],
-  providers: [UserService, JwtStrategy],
+  providers: [UserService, JwtStrategy, TokenBlackListService],
 })
 export class UserModule {}

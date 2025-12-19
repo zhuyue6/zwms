@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './modules/prisma.module';
+import { RedisModule } from './modules/redis.module';
 import { WinstonLoggerService } from './common/loggers/winston.service';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { MulterModule } from '@nestjs/platform-express';
@@ -17,6 +18,7 @@ import { GlobalExceptionFilter } from './common/filters/global.filter';
   imports: [
     UserModule,
     PrismaModule,
+    RedisModule,
     OssModule,
     ConfigModule,
     MulterModule.register({

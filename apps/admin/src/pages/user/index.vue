@@ -1,22 +1,33 @@
 <template>
-  <div class="flex pl-[100px] pt-[60px]">
+  <div class="flex pl-[100px] pt-[60px] flex-col">
     <el-form label-width="100" class="w-[600px]">
       <el-form-item label="用户名">
         <div class="flex">
-          <el-input v-model="state.formData.name" />
-          <el-button class="">修改</el-button>
+          <el-input v-model="state.formData.name" :disabled="state.type !== 'edit'" />
         </div>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input v-model="state.formData.password"  /> 
+        <el-input v-model="state.formData.password" :disabled="state.type !== 'edit'"  /> 
       </el-form-item>
       <el-form-item label="年龄">
-        <el-input v-model="state.formData.age"  /> 
+        <el-input v-model="state.formData.age" :disabled="state.type !== 'edit'"  /> 
       </el-form-item>
       <el-form-item label="头像">
-        <el-avatar size="100" :src="state.formData.avatarUrl"></el-avatar>
+        <div class="flex">
+          <el-avatar size="100" :src="state.formData.avatarUrl"></el-avatar>
+          <el-upload
+            :before-upload="upload"
+          >
+            <template #tip>
+              <div class="el-upload__tip">
+                jpg/png files with a size less than 500KB.
+              </div>
+            </template>
+          </el-upload>
+        </div>
       </el-form-item>
     </el-form>
+    <el-button class="w-[100px] ml-100px" @click="submit">修改</el-button>
   </div>
 </template>
 
@@ -28,6 +39,7 @@
 
   interface State {
     formData: Partial<User>
+    type: 'view' | 'edit'
   }
 
   const state: State = reactive({
@@ -36,7 +48,8 @@
       password: '',
       avatarUrl: '',
       age: undefined
-    }
+    },
+    type: 'view'
   })
 
   watchEffect(() => {
@@ -44,5 +57,15 @@
       ...toValue(userInfo)
     } as any
   })
+
+  function submit() {
+    if (state.type === 'view') {
+      
+    }
+  }
+
+  function upload() {
+    
+  }
 
 </script>

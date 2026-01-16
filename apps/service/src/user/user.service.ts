@@ -4,7 +4,7 @@ import { PrismaService } from '../modules/prisma.service';
 import type { LoginDto, RegisterDto, UpdateDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { OssService } from '../common/oss/oss.service';
-import { TokenBlackListService } from '../common/blacklist/token.service'
+import { TokenBlackListService } from '../common/blacklist/token.service';
 
 @Injectable()
 export class UserService {
@@ -42,7 +42,7 @@ export class UserService {
       name: user.name,
     };
 
-    Reflect.deleteProperty(user, password)
+    Reflect.deleteProperty(user, password);
 
     // 登录成功，返回jwt_token
     const token = this.jwtService.sign(payload);
@@ -52,13 +52,16 @@ export class UserService {
     };
   }
   async logout() {
-    const token: string = (this.req.headers as any)?.authorization?.replace('Bearer ', '')
+    const token: string = (this.req.headers as any)?.authorization?.replace(
+      'Bearer ',
+      '',
+    );
     if (token) {
-      await this.tokenBlackListService.add(token)
+      await this.tokenBlackListService.add(token);
     }
     return {
       message: '用户退出成功',
-    }
+    };
   }
   async update(updateDto: UpdateDto) {
     const userId = (this.req as any).user?.userId;
@@ -107,7 +110,7 @@ export class UserService {
       },
     });
     return {
-      url
+      url,
     };
   }
   async getInfo() {
@@ -116,10 +119,10 @@ export class UserService {
       where: { id: userId },
     });
     if (user) {
-      Reflect.deleteProperty(user, 'password')
+      Reflect.deleteProperty(user, 'password');
     }
     return {
-      user
-    }
+      user,
+    };
   }
 }

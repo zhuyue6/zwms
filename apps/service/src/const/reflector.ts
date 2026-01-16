@@ -1,1 +1,1 @@
-export const IS_PUBLIC_KEY = Symbol('is_public_key')
+export const IS_PUBLIC_KEY = Symbol('is_public_key');

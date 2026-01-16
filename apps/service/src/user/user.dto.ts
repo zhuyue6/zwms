@@ -19,7 +19,10 @@ export class RegisterDto implements Pick<UserInfo, 'name' | 'password'> {
   password: string;
 }
 
-export class UpdateDto implements Pick<UserInfo, 'password'> {
+export class UpdateDto implements Pick<UserInfo, 'name' | 'password'> {
+  @IsName()
+  name: string;
+  @IsPassword()
   password: string;
 }
 
@@ -27,6 +30,4 @@ export interface UploaderAvatarDto {
   url: string;
 }
 
-export {
-  UserInfo as UserInfoDto
-}
+export { UserInfo as UserInfoDto };

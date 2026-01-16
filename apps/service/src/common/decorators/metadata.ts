@@ -1,4 +1,4 @@
-import { IS_PUBLIC_KEY } from '../../const/reflector'
+import { IS_PUBLIC_KEY } from '../../const/reflector';
 
 import { SetMetadata } from '@nestjs/common';
 

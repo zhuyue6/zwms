@@ -1,7 +1,7 @@
 import { AuthGuard } from '@nestjs/passport';
-import { CanActivate, ExecutionContext, Injectable  } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../../const/reflector'
+import { IS_PUBLIC_KEY } from '../../const/reflector';
 /**
  * jwt guard需要拥有直接通行无需校验和校验验证的能力，这里使用public来标注直接
  * 通行的路由
@@ -17,7 +17,7 @@ export class JwtGuard extends AuthGuard('jwt') implements CanActivate {
       context.getClass(), // 检查类级装饰器（如整个Controller都无需认证）
     ]);
     if (isPublic) {
-      return true
+      return true;
     }
     return super.canActivate(context);
   }

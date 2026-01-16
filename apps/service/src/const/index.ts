@@ -1,1 +1,1 @@
-export * as reflector from './reflector'
+export * as reflector from './reflector';

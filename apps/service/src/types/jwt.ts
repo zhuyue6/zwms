@@ -1,4 +1,4 @@
 export interface JWTPayload {
-  name: string,
-  sub: number
+  name: string;
+  sub: number;
 }

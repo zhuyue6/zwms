@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import Redis from 'ioredis'
+import Redis from 'ioredis';
 
 /**
  * redis 服务，使用ioredis进行封装
@@ -8,15 +8,15 @@ import Redis from 'ioredis'
  */
 @Injectable()
 export class RedisService {
-  redis: Redis
+  redis: Redis;
   constructor() {
-    this.redis = new Redis()
+    this.redis = new Redis();
   }
   async set(key: string, value: string, ttl: number) {
     return this.redis.set(key, value, 'EX', ttl);
   }
   async isExists(key: string) {
     const result = await this.redis.exists(key);
-    return result === 1
+    return result === 1;
   }
 }

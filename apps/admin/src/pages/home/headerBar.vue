@@ -8,11 +8,11 @@
         <div class="mr-2">{{ userInfo.name }}</div>
         <el-popover 
           placement="bottom" 
-          trigger="click"
+          trigger="hover"
           :visible="visible"
         >
           <template #reference>
-            <el-avatar :src="userInfo.avatarUrl" @click="setPopoverVisible(!visible)" />
+            <el-avatar :src="userInfo.avatarUrl" class="cursor-pointer" @click="setPopoverVisible(!visible)" />
           </template>
           <div class="flex flex-col items-center">
             <el-button type="text" @click="updateInfo">修改个人信息</el-button>

@@ -10,7 +10,6 @@ import {
 import { Response, Request } from 'express';
 import { WinstonLoggerService } from '../loggers/winston.service';
 
-
 interface ExceptionResponse {
   message: string;
   code: number;
@@ -29,7 +28,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       ? `userId: ${(request?.user as any).userId}`
       : '';
 
-    const { message, code, status, stack } = this.handleException(exception)
+    const { message, code, status, stack } = this.handleException(exception);
     const errorMessage = `userId: ${userIdMessage}, ${message}`;
     this.logger.error(errorMessage, stack);
     const errorResponse = {
@@ -43,19 +42,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     response.send(errorResponse);
   }
   handleException(exception: unknown) {
-    let code = -1
-    let message = ''
-    let status = 200
-    let stack: undefined | string = undefined
+    let code = -1;
+    let message = '';
+    let status = 200;
+    let stack: undefined | string = undefined;
     if (
       exception instanceof HttpException ||
-      exception instanceof NotFoundException || 
-      exception instanceof ServiceUnavailableException || 
-      exception instanceof BadRequestException 
+      exception instanceof NotFoundException ||
+      exception instanceof ServiceUnavailableException ||
+      exception instanceof BadRequestException
     ) {
       const exceptionResponse = exception.getResponse(); // 获取抛出异常内容
-      status = exception.getStatus()
-      stack = exception.stack
+      status = exception.getStatus();
+      stack = exception.stack;
       if (typeof exceptionResponse === 'object') {
         message = (exceptionResponse as ExceptionResponse)?.message ?? message;
         code = (exceptionResponse as ExceptionResponse)?.code ?? code;
@@ -67,7 +66,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       code,
       message,
       status,
-      stack
-    }
+      stack,
+    };
   }
 }

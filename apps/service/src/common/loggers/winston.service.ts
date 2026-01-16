@@ -1,6 +1,6 @@
-import * as winston from 'winston'
+import * as winston from 'winston';
 import { ConfigService } from '@nestjs/config';
-import { Injectable, LoggerService } from '@nestjs/common'
+import { Injectable, LoggerService } from '@nestjs/common';
 
 @Injectable()
 /**
@@ -22,7 +22,7 @@ export class WinstonLoggerService implements LoggerService {
       transports: this.getTransports(), // 输出目标（控制台、文件等）
     });
   }
-     // 根据环境配置输出源
+  // 根据环境配置输出源
   private getTransports(): winston.transport[] {
     const transports: winston.transport[] = [];
 
@@ -42,11 +42,17 @@ export class WinstonLoggerService implements LoggerService {
     if (this.configService.get<string>('NODE_ENV') === 'production') {
       // 普通日志
       transports.push(
-        new winston.transports.File({ filename: 'logs/info.log', level: 'info' }),
+        new winston.transports.File({
+          filename: 'logs/info.log',
+          level: 'info',
+        }),
       );
       // 错误日志（单独存储）
       transports.push(
-        new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+        new winston.transports.File({
+          filename: 'logs/error.log',
+          level: 'error',
+        }),
       );
     }
 

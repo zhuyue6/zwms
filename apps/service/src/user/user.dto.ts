@@ -1,4 +1,8 @@
 import { IsName, IsPassword } from '../common/pipes/validator.pipe';
+import {
+  IsOptional,
+  IsNumber
+} from 'class-validator';
 
 //
 class UserInfo {
@@ -20,10 +24,21 @@ export class RegisterDto implements Pick<UserInfo, 'name' | 'password'> {
 }
 
 export class UpdateDto implements Pick<UserInfo, 'name' | 'password'> {
+  @IsOptional()
   @IsName()
   name: string;
+  @IsOptional()
   @IsPassword()
   password: string;
+  @IsOptional()
+  @IsPassword()
+  newPassword: string;
+  @IsOptional()
+  @IsNumber()
+  age: number;
+  @IsOptional()
+  @IsNumber()
+  permission;
 }
 
 export interface UploaderAvatarDto {

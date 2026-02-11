@@ -19,14 +19,10 @@
   import headerBar from './headerBar.vue'
   import menus from './menus.vue'
   import { useUserInfo } from '../../hooks'
-  import { user as UserAPI } from '../../api'
-  const { setUserInfo } = useUserInfo()
+  const { updateUserInfo } = useUserInfo()
 
   onMounted(async () => {
-    const { user } = await UserAPI.getInfo()
-    if (user) {
-      setUserInfo(user)
-    }
+    updateUserInfo()
   })
 
 </script>

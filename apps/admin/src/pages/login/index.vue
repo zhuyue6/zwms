@@ -2,7 +2,7 @@
   <div class="w-full h-full flex">
     <div class="w-full bg-[#eee] flex items-center justify-center">
       <div class="p-8 bg-[#fff] rounded-md">
-        <div class="flex flex-col w-[300px] ">
+        <div class="flex flex-col w-[300px]">
           <el-form 
             :model="state.formData"
             label-width="auto"
@@ -15,7 +15,7 @@
               <el-input v-model="state.formData.name" />
             </el-form-item>
             <el-form-item label="密码"  prop="password">
-              <el-input v-model="state.formData.password" />
+              <el-input v-model="state.formData.password" type="password" />
             </el-form-item>
           </el-form> 
           <el-button class="mt-4" type="primary" @click="submit">{{ submitText }}</el-button>

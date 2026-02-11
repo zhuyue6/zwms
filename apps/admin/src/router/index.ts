@@ -5,6 +5,13 @@ const routes: RouteRecordRaw[] = [
     path: '/', component: () => import('../pages/home/index.vue'),
     children: [{
       path: 'user', component: () => import('../pages/user/index.vue'),
+      children: [{
+        path: 'info',
+        component: () => import('../pages/user/info.vue')
+      }, {
+        path: 'safe',
+        component: () => import('../pages/user/safe.vue')
+      }]
     }],
     redirect: '/user'
   },

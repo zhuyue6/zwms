@@ -27,7 +27,6 @@ export class UserController {
   register(@Body() registerDto: RegisterDto) {
     return this.userService.register(registerDto);
   }
-  @Public()
   @Post('/update')
   update(@Body() updateDto: UpdateDto) {
     return this.userService.update(updateDto);

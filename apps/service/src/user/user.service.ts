@@ -70,13 +70,38 @@ export class UserService {
       where: { id: userId },
     });
     if (user) {
+      // 判断原始密码是否正确
+      if(updateDto.password) {
+        return this.updateSafe(updateDto, user)
+      }
+      const updateData: Partial<UpdateDto> = {}
+      if (updateDto.name) {
+        updateData.name = updateDto.name
+      }
+      if (updateDto.age) {
+        updateData.age = updateDto.age
+      }
+
       await this.prisma.user.update({
         where: { id: userId },
-        data: {
-          password: updateDto.password,
-        },
+        data: updateData,
       });
     }
+  }
+  async updateSafe(updateDto: UpdateDto, user: any) {
+    if(updateDto.password !== user.password) {
+      return {
+        code: 10003,
+        message: '原始密码错误',
+        data: undefined,
+      };
+    }
+    await this.prisma.user.update({
+      where: { id: user.userId },
+      data: {
+        password: updateDto.newPassword,
+      },
+    });
   }
   async register(registerDto: RegisterDto) {
     const { name, password } = registerDto ?? {};
@@ -96,6 +121,7 @@ export class UserService {
       data: {
         name,
         age: 10,
+        permission: 1,
         password,
       },
     });

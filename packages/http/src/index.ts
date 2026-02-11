@@ -11,8 +11,8 @@ function get<T, P=object>(url: string, params: P, config?: AxiosRequestConfig) {
   })
 }
 
-function post<T, P=object>(url: string, params: P, config?: AxiosRequestConfig) {
-  return http.post<T>(url, params, config)
+function post<T, P=object>(url: string, params?: P, config?: AxiosRequestConfig) {
+  return http.post<T>(url, params ?? {}, config)
 }
 
 export { get, post }

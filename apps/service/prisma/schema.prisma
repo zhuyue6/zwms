@@ -12,7 +12,6 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-  
 }
 
 model User {
@@ -21,4 +20,5 @@ model User {
   password String
   age   Int?
   avatarUrl String?
+  permission Int
 }

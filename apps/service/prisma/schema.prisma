@@ -15,10 +15,27 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  password String
-  age   Int?
-  avatarUrl String?
-  permission Int
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(50) 
+  password     String   @db.VarChar(100) 
+  age          Int?     @db.Int
+  avatarUrl    String?  @db.VarChar(255)  @map("avatar_url")
+  permission   Int      @default(1)
+  @@map("user")
+}
+
+model ArticleCategory {
+  id              BigInt     @id @default(autoincrement())
+  categoryName    String     @db.VarChar(50) @map("category_name")
+  createTime      DateTime   @default(now()) @map("create_time")
+  updateTime      DateTime   @updatedAt @map("update_time")
+  @@map("article_category")
+}
+
+model ArticleTag {
+  id          BigInt      @id @default(autoincrement())
+  tagName     String      @db.VarChar(50) @map("tag_name")
+  createTime  DateTime    @default(now()) @map("create_time")
+  updateTime  DateTime    @updatedAt @map("update_time")
+  @@map("article_taf")
 }

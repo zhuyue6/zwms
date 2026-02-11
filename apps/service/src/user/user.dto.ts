@@ -6,6 +6,7 @@ import {
 
 //
 class UserInfo {
+  id: number
   name: string;
   age: number;
   password: string;
@@ -39,6 +40,10 @@ export class UpdateDto implements Pick<UserInfo, 'name' | 'password'> {
   @IsOptional()
   @IsNumber()
   permission;
+}
+
+export class DeleteDto implements Pick<UserInfo, 'id'> {
+  id: number
 }
 
 export interface UploaderAvatarDto {

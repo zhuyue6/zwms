@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { PrismaService } from '../modules/prisma.service';
-import type { LoginDto, RegisterDto, UpdateDto } from './user.dto';
+import type { LoginDto, RegisterDto, UpdateDto, DeleteDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { OssService } from '../common/oss/oss.service';
 import { TokenBlackListService } from '../common/blacklist/token.service';
@@ -70,6 +70,14 @@ export class UserService {
       where: { id: userId },
     });
     if (user) {
+      if (user.permission === 0) {
+        // 管理员直接改，先不校验
+        await this.prisma.user.update({
+          where: { id: userId },
+          data: updateDto,
+        });
+        return
+      }
       // 判断原始密码是否正确
       if(updateDto.password) {
         return this.updateSafe(updateDto, user)
@@ -101,6 +109,24 @@ export class UserService {
       data: {
         password: updateDto.newPassword,
       },
+    });
+  }
+  async delete(deleteDto: DeleteDto) {
+    const { id } = deleteDto ?? {};
+    // 1. 查询用户是否存在
+    const user = await this.prisma.user.findFirst({
+      where: { id },
+    });
+    if (!user) {
+      return {
+        code: 10004,
+        message: '账号不存在',
+        data: undefined,
+      };
+    }
+    // 账号注册
+    await this.prisma.user.delete({
+      where: { id },
     });
   }
   async register(registerDto: RegisterDto) {
@@ -137,6 +163,12 @@ export class UserService {
     });
     return {
       url,
+    };
+  }
+  async getList() {
+    const list = await this.prisma.user.findMany();
+    return {
+      list
     };
   }
   async getInfo() {

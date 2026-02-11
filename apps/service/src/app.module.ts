@@ -13,10 +13,12 @@ import { ConfigModule } from '@nestjs/config';
 import { OssModule } from './common/oss/oss.module';
 import { memoryStorage } from 'multer';
 import { GlobalExceptionFilter } from './common/filters/global.filter';
+import { ArticleModule } from './article/article.module'
 
 @Module({
   imports: [
     UserModule,
+    ArticleModule,
     PrismaModule,
     RedisModule,
     OssModule,
@@ -26,7 +28,9 @@ import { GlobalExceptionFilter } from './common/filters/global.filter';
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB限制
     }),
   ],
-  controllers: [AppController],
+  controllers: [
+    AppController
+  ],
   providers: [
     AppService,
     {

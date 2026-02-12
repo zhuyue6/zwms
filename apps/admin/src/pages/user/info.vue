@@ -69,6 +69,7 @@
       if (matcher) {
         return i18n.t(`user.${matcher.key}`)
       }
+      return ''
     })
 
     const saveDisabled = computed(() => {

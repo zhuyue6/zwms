@@ -15,7 +15,7 @@
               <el-input v-model="state.formData.name" />
             </el-form-item>
             <el-form-item label="密码"  prop="password">
-              <el-input v-model="state.formData.password" type="password" />
+              <el-input v-model="state.formData.password" type="password" show-password />
             </el-form-item>
           </el-form> 
           <el-button class="mt-4" type="primary" @click="submit">{{ submitText }}</el-button>

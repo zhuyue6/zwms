@@ -22,7 +22,7 @@
   const { userInfo, updateUserInfo } = useUserInfo()
 
   const upload: UploadProps['beforeUpload'] = async (rawFile: any) => {
-    if (regex.AVATAR_TYPE_REGEX.test(rawFile.type)) {
+    if (!regex.AVATAR_TYPE_REGEX.test(rawFile.type)) {
       ElMessage.error('Avatar picture type must be jpg/jpeg/png')
       return false
     }

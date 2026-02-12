@@ -37,5 +37,5 @@ model ArticleTag {
   tagName     String      @db.VarChar(50) @map("tag_name")
   createTime  DateTime    @default(now()) @map("create_time")
   updateTime  DateTime    @updatedAt @map("update_time")
-  @@map("article_taf")
+  @@map("article_tag")
 }

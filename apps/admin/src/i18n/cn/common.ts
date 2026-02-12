@@ -3,4 +3,5 @@ export default {
   back: '返回',
   save: '保存',
   cancel: '取消',
+  operate: '操作',
 }

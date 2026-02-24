@@ -1,16 +1,14 @@
 {
   "name": "@zwms/shared",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "共享包",
+  "main": "dist/index.cjs",
   "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
-    "./src": {
-      "import": "./src/index.ts"
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {

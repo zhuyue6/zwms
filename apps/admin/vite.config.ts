@@ -4,6 +4,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -29,6 +30,7 @@ export default defineConfig({
     cors: true,
   },
   plugins: [
+    tailwindcss(),
     vuePlugin(),
     AutoImport({
       resolvers: [ElementPlusResolver()],

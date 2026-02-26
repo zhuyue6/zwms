@@ -16,5 +16,8 @@
   },
   "app": "false",
   "author": "zhuyue",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.19"
+  }
 }

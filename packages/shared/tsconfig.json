@@ -4,6 +4,7 @@
     "target": "ESNext", 
     "moduleResolution": "Node", 
     "declaration": true,
+    "allowSyntheticDefaultImports": true,
     "declarationDir": "./dist",
     "outDir": "./dist", 
     "skipLibCheck": true

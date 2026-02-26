@@ -26,12 +26,12 @@ export class TransformInterceptor<T>
     return next.handle().pipe(
       map((data) => {
         // 如果返回有code值就是正常填充，如果没有默认10000成功
-        const code = data.code ?? 10000
-        const message = data.message ?? 'success'
-        let responseData = data?.data 
-        if (utils.isUndef(data.code) && utils.isUndef(data.message) && utils.isUndef(data.data)) {
+        const code = data?.code ?? 10000
+        const message = data?.message ?? 'success'
+        let responseData = data?.data ?? {}
+        if (utils.isUndef(data?.code) && utils.isUndef(data?.message) && utils.isUndef(data?.data)) {
           // 如果data中data、code、message都不存在的话，使用data作为数值响应
-          responseData = data
+          responseData = data ?? {}
         }
 
         return {

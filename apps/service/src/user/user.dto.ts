@@ -1,30 +1,43 @@
 import { IsName, IsPassword } from '../common/pipes/validator.pipe';
 import {
   IsOptional,
-  IsNumber
+  IsNumber,
+  IsString
 } from 'class-validator';
+import { Expose, Exclude } from 'class-transformer'
 
-//
-class UserInfo {
+
+// user 对象属性集合
+export class UserDto {
+  @Expose()
   id: number
+  @Expose()
   name: string;
+  @Expose()
   age: number;
+  @Exclude()
   password: string;
+  @Expose()
+  avatarUrl: string
+  @Expose()
+  permission: number;
 }
 
-export class LoginDto implements Pick<UserInfo, 'name' | 'password'> {
-  name: string;
-  password: string;
-}
-
-export class RegisterDto implements Pick<UserInfo, 'name' | 'password'> {
+export class LoginDto implements Pick<UserDto, 'name' | 'password'> {
   @IsName()
   name: string;
   @IsPassword()
   password: string;
 }
 
-export class UpdateDto implements Pick<UserInfo, 'name' | 'password'> {
+export class RegisterDto implements Pick<UserDto, 'name' | 'password'> {
+  @IsName()
+  name: string;
+  @IsPassword()
+  password: string;
+}
+
+export class UpdateDto implements Pick<UserDto, 'name' | 'password'> {
   @IsOptional()
   @IsName()
   name: string;
@@ -39,15 +52,10 @@ export class UpdateDto implements Pick<UserInfo, 'name' | 'password'> {
   age: number;
   @IsOptional()
   @IsNumber()
-  permission;
+  permission: number;
 }
 
-export class DeleteDto implements Pick<UserInfo, 'id'> {
+export class DeleteDto implements Pick<UserDto, 'id'> {
+  @IsNumber()
   id: number
 }
-
-export interface UploaderAvatarDto {
-  url: string;
-}
-
-export { UserInfo as UserInfoDto };

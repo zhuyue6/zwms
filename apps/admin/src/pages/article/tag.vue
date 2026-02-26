@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex mb-2">
-      <el-button type="primary" @click="createUserPrev">创建</el-button>
+      <el-button type="primary" @click="createTagPrev">创建</el-button>
     </div>
     <el-table :data="state.tableData" stripe>
       <el-table-column 
@@ -62,8 +62,7 @@
   const i18n = useI18n()
 
   const rules = {
-    name: [validate.validateName()],
-    password: [validate.validatePassword()]
+    tagName: [validate.validateRequire()],
   }
 
   const state = reactive({
@@ -83,7 +82,7 @@
     state.tableData = res.list
   }
 
-  function createUserPrev() {
+  function createTagPrev() {
     state.type = 'create'
     state.selected.tagName = ''
     dialogVisible(true)
@@ -101,9 +100,9 @@
             tagName: state.selected.tagName,
           })
         } else {
-          await ARTICLERAPI.update({
-            id: state.selected.id,
-            password: state.selected.tagName
+          await ARTICLERAPI.updateTag({
+            id: Number(state.selected.id),
+            tagName: state.selected.tagName
           })
         }
         getList()
@@ -120,9 +119,9 @@
   }
 
   async function deleteTag(tag) {
-    await ElMessageBox.confirm('确定要删除用户?')
-    await ARTICLERAPI.del({
-      id: tag.id
+    await ElMessageBox.confirm('确定要删除标签?')
+    await ARTICLERAPI.deleteTag({
+      id: Number(tag.id)
     })
     getList()
   }

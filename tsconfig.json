@@ -19,7 +19,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "allowJs": true,
-<<<<<<< Updated upstream
     "baseUrl": ".",
     "paths": {
       "@zwms/*": ["./apps/*/src", "./packages/*/src"]
@@ -29,8 +28,3 @@
   "exclude": ["node_modules"],
   "files": ["type.d.ts"]
 }
-=======
-    "baseUrl": "."
-  }
-}
->>>>>>> Stashed changes

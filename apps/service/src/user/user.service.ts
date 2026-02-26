@@ -1,10 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { PrismaService } from '../modules/prisma.service';
-import type { LoginDto, RegisterDto, UpdateDto, DeleteDto } from './user.dto';
+import  {type LoginDto, type RegisterDto, type UpdateDto,type DeleteDto, UserDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { OssService } from '../common/oss/oss.service';
 import { TokenBlackListService } from '../common/blacklist/token.service';
+import { plainToClass } from 'class-transformer'
 
 @Injectable()
 export class UserService {
@@ -46,9 +47,10 @@ export class UserService {
 
     // 登录成功，返回jwt_token
     const token = this.jwtService.sign(payload);
+    const userDto = plainToClass(UserDto, user)
     return {
       token,
-      user,
+      user: userDto,
     };
   }
   async logout() {
@@ -167,8 +169,11 @@ export class UserService {
   }
   async getList() {
     const list = await this.prisma.user.findMany();
+    const formatList = list.map((user)=>{
+      return plainToClass(UserDto, user)
+    })
     return {
-      list
+      list: formatList
     };
   }
   async getInfo() {
@@ -176,11 +181,10 @@ export class UserService {
     const user = await this.prisma.user.findFirst({
       where: { id: userId },
     });
-    if (user) {
-      Reflect.deleteProperty(user, 'password');
-    }
+
+    const userDto = plainToClass(UserDto, user)
     return {
-      user,
+      user: userDto,
     };
   }
 }

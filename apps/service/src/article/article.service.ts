@@ -9,16 +9,18 @@ import {
   CreateArticleCategoryDto,
   UpdateArticleCategoryDto,
   DeleteArticleCategoryDto,
-  ArticleCategoryDto
+  ArticleCategoryDto,
+  CreateArticleDto,
+  UpdateArticleDto,
+  DeleteArticleDto,
+  ArticleDto
  } from './article.dto';
-import { JwtService } from '@nestjs/jwt';
 import { plainToClass } from 'class-transformer'
 
 @Injectable()
 export class ArticleService {
   constructor(
     private prisma: PrismaService,
-    private jwtService: JwtService,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
   async createTag(createArticleTagDto: CreateArticleTagDto) {
@@ -113,6 +115,101 @@ export class ArticleService {
     const list = await this.prisma.articleCategory.findMany();
     const formatList = list.map((item)=>{
       return plainToClass(ArticleCategoryDto, item);
+    })
+    return {
+      list: formatList,
+    };
+  }
+  async createArticle(createArticleDto: CreateArticleDto) {
+    const userId = (this.req as any).user?.userId;
+    await this.prisma.article.create({
+      data: {
+        title: createArticleDto.title,
+        tagId: createArticleDto.tagId,
+        categoryId: createArticleDto.categoryId,
+        createBy: userId
+      }
+    })
+  }
+  async updateArticle(updateArticleDto: UpdateArticleDto) {
+    const category = await this.prisma.article.findFirst({
+      where: { id: updateArticleDto.id },
+    });
+    if (category) {
+      await this.prisma.article.update({
+        where: { 
+          id: updateArticleDto.id
+        },
+        data: {
+          tagId: updateArticleDto.tagId,
+          categoryId: updateArticleDto.categoryId,
+          title: updateArticleDto.title
+        }
+      });
+    }
+  }
+  async deleteArticle(deleteArticleDto: DeleteArticleDto) {
+    const article = await this.prisma.article.findFirst({
+      where: { id: deleteArticleDto.id },
+    });
+    if (article) {
+      await this.prisma.article.delete({
+        where: { id: deleteArticleDto.id },
+      });
+    }
+  }
+  async getArticleList() {
+    const list = await this.prisma.article.findMany({
+      orderBy: [
+        { updateTime: 'desc' }
+      ],
+      // 只返回前端需要的字段（避免冗余）
+      select: {
+        id: true,
+        title: true,
+        summary: true,
+        viewCount: true,
+        createTime: true,
+        updateTime: true,
+        categoryId: true,
+        tagId: true,
+        // 关联查询分类（一对多）
+        category: {
+          select: {
+            categoryName: true // 只取分类名称
+          }
+        },
+        // 关联查询标签（多对多：文章→中间表→标签）
+        tags: {
+          select: {
+            tagName: true // 只取标签名称
+          }
+        },
+        creator: {
+          select: {
+            name: true
+          }
+        }
+      },
+      // 只查已发布的文章
+      where: {
+        status: 1
+      }
+    });
+    const formatList = list.map((item)=>{
+      const article: object = { 
+        ...item, 
+        categoryName: item.category.categoryName,
+        tagName: item.tags.tagName,
+        creatorName: item.creator.name
+      }
+      Reflect.deleteProperty(article, 'category')
+      Reflect.deleteProperty(article, 'tags')
+      Reflect.deleteProperty(article, 'creator')
+      return plainToClass(
+        ArticleDto, 
+        article
+      );
     })
     return {
       list: formatList,

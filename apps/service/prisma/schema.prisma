@@ -21,6 +21,7 @@ model User {
   age          Int?     @db.Int
   avatarUrl    String?  @db.VarChar(255)  @map("avatar_url")
   permission   Int      @default(1)
+  articles     Article[]  
   @@map("user")
 }
 
@@ -29,6 +30,7 @@ model ArticleCategory {
   categoryName    String     @db.VarChar(50) @map("category_name")
   createTime      DateTime   @default(now()) @map("create_time")
   updateTime      DateTime   @updatedAt @map("update_time")
+  articles      Article[]  
   @@map("article_category")
 }
 
@@ -37,5 +39,25 @@ model ArticleTag {
   tagName     String      @db.VarChar(50) @map("tag_name")
   createTime  DateTime    @default(now()) @map("create_time")
   updateTime  DateTime    @updatedAt @map("update_time")
+  articles     Article[] 
   @@map("article_tag")
+}
+
+model Article {
+  id          BigInt      @id @default(autoincrement())
+  title       String      @db.VarChar(100)
+  categoryId  BigInt      @map("category_id")
+  category    ArticleCategory  @relation(fields: [categoryId], references: [id])
+  tagId       BigInt      @map("tag_id")
+  tags        ArticleTag  @relation(fields: [tagId], references: [id])
+  contentMd   String?     @db.LongText  @map("content_md")
+  contentHtml String?     @db.LongText  @map("content_html")
+  summary     String?     @db.VarChar(200)
+  status      Int?        @db.Int
+  viewCount   Int?        @db.Int @map("view_count")
+  createBy    Int         @db.Int @map("create_by")
+  creator     User        @relation(fields: [createBy], references: [id])
+  createTime  DateTime    @default(now()) @map("create_time")
+  updateTime  DateTime    @updatedAt @map("update_time")
+  @@map("article")
 }

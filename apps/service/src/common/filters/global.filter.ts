@@ -43,9 +43,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   }
   handleException(exception: unknown) {
     let code = -1;
-    let message = '';
+    let message = (exception as any)?.message ?? '';
     let status = 200;
-    let stack: undefined | string = undefined;
+    let stack: undefined | string = (exception as any)?.stack ?? undefined;
     if (
       exception instanceof HttpException ||
       exception instanceof NotFoundException ||

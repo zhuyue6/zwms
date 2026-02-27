@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex mb-2">
-      <el-button type="primary" @click="createTagPrev">创建</el-button>
+      <el-button type="primary" @click="createPrev">创建</el-button>
     </div>
     <el-table :data="state.tableData" stripe>
       <el-table-column 
@@ -82,7 +82,7 @@
     state.tableData = res.list
   }
 
-  function createTagPrev() {
+  function createPrev() {
     state.type = 'create'
     state.selected.categoryName = ''
     dialogVisible(true)

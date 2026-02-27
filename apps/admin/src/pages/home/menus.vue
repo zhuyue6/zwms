@@ -11,6 +11,7 @@
     </el-sub-menu>
     <el-sub-menu index="/article">
       <template #title>文章栏</template>
+      <el-menu-item index="/article/list">文章列表</el-menu-item>
       <el-menu-item index="/article/category">类别管理</el-menu-item>
       <el-menu-item index="/article/tag">标签管理</el-menu-item>
     </el-sub-menu>

@@ -10,7 +10,10 @@ import {
   DeleteArticleTagDto,
   CreateArticleCategoryDto,
   UpdateArticleCategoryDto,
-  DeleteArticleCategoryDto
+  DeleteArticleCategoryDto,
+  CreateArticleDto,
+  UpdateArticleDto,
+  DeleteArticleDto
 } from './article.dto';
 
 @Controller('article')
@@ -49,5 +52,21 @@ export class ArticleController {
   @Post('/getCategoryList')
   getCategoryList() {
     return this.articleService.getCategoryList();
+  }
+  @Post('/createArticle')
+  createArticle(@Body() createArticleDto: CreateArticleDto) {
+    return this.articleService.createArticle(createArticleDto);
+  }
+  @Post('/updateArticle')
+  updateArticle(@Body() updateArticleDto: UpdateArticleDto) {
+    return this.articleService.updateArticle(updateArticleDto);
+  }
+  @Post('/deleteArticle')
+  deleteArticle(@Body() deleteArticleDto: DeleteArticleDto) {
+    return this.articleService.deleteArticle(deleteArticleDto);
+  }
+  @Post('/getArticleList')
+  getArticleList() {
+    return this.articleService.getArticleList();
   }
 }

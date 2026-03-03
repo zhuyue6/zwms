@@ -33,6 +33,7 @@
       >
         <template #default="{ row }">
           <div v-if="row.permission !== 0">
+            <el-button type="text" @click="viewItem(row)">查看详情</el-button>
             <el-button type="text" @click="editItem(row)">编辑</el-button>
             <el-button type="text" @click="deleteItem(row)">删除</el-button>
           </div>
@@ -43,6 +44,7 @@
       v-model="state.dialogVisible"
       :title="state.type === 'create' ? '创建文章' : '编辑文章'"
       width="500"
+      destroy-on-close
     >
       <el-form 
         ref="formRef"
@@ -100,8 +102,10 @@
   import { article as ARTICLERAPI } from '../../api'
   import { ElMessageBox } from 'element-plus'
   import { validate } from '../../shared'
+  import { useRouter } from 'vue-router'
 
   const i18n = useI18n()
+  const router = useRouter()
 
   const rules = {
     categoryId: [validate.validateRequire()],
@@ -163,6 +167,15 @@
         }
         getList()
         dialogVisible(false)
+      }
+    })
+  }
+
+  function viewItem(item) {
+    router.push({
+      name: 'articleInfo',
+      query: {
+        id: item.id
       }
     })
   }

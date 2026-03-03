@@ -13,7 +13,8 @@ import {
   DeleteArticleCategoryDto,
   CreateArticleDto,
   UpdateArticleDto,
-  DeleteArticleDto
+  DeleteArticleDto,
+  GetArticleDto
 } from './article.dto';
 
 @Controller('article')
@@ -68,5 +69,9 @@ export class ArticleController {
   @Post('/getArticleList')
   getArticleList() {
     return this.articleService.getArticleList();
+  }
+  @Post('/getArticleInfo')
+  getArticleInfo(@Body() getArticleDto: GetArticleDto) {
+    return this.articleService.getArticleInfo(getArticleDto);
   }
 }

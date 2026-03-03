@@ -13,6 +13,7 @@ import {
   CreateArticleDto,
   UpdateArticleDto,
   DeleteArticleDto,
+  GetArticleDto,
   ArticleDto
  } from './article.dto';
 import { plainToClass } from 'class-transformer'
@@ -132,19 +133,16 @@ export class ArticleService {
     })
   }
   async updateArticle(updateArticleDto: UpdateArticleDto) {
-    const category = await this.prisma.article.findFirst({
+    const matcher = await this.prisma.article.findFirst({
       where: { id: updateArticleDto.id },
     });
-    if (category) {
+    if (matcher) {
+      const updated: Partial<UpdateArticleDto> = updateArticleDto
       await this.prisma.article.update({
         where: { 
           id: updateArticleDto.id
         },
-        data: {
-          tagId: updateArticleDto.tagId,
-          categoryId: updateArticleDto.categoryId,
-          title: updateArticleDto.title
-        }
+        data: updated
       });
     }
   }
@@ -214,5 +212,16 @@ export class ArticleService {
     return {
       list: formatList,
     };
+  }
+  async getArticleInfo(getArticleDto: GetArticleDto) {
+    const article = await this.prisma.article.findFirst({
+      where: {
+        id: getArticleDto.id
+      }
+    })
+    return plainToClass(
+      ArticleDto, 
+      article
+    )
   }
 }

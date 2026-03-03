@@ -1,6 +1,6 @@
 import { utils } from '@zwms/shared'
 import { Expose, Transform } from 'class-transformer'
-import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 
 export class ArticleTagDto {
@@ -116,15 +116,25 @@ export class CreateArticleDto implements Pick<ArticleDto, 'title' | 'categoryId'
 export class UpdateArticleDto implements Pick<ArticleDto, 'id' | 'title' | 'categoryId' | 'tagId'> {
   @IsNumber()
   id: number
+  @IsOptional()
   @IsString()
   title: string
+  @IsOptional()
   @IsNumber()
   categoryId: number
+  @IsOptional()
   @IsNumber()
   tagId: number
+  @IsOptional()
+  @IsString()
+  contentHtml
 }
 
 export class DeleteArticleDto implements Pick<ArticleDto, 'id'> {
   @IsNumber()
   id: number
+}
+
+export class GetArticleDto extends DeleteArticleDto {
+
 }

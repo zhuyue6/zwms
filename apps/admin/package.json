@@ -21,6 +21,8 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "element-plus": "^2.12.0",
     "pinia": "^3.0.4",
     "vue": "^3.4.21",

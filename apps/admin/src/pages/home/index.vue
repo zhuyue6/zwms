@@ -1,10 +1,10 @@
 <template>
-  <el-container>
-    <el-header class="h-[60px]">
+  <el-container class="w-full h-full">
+    <el-header class="h-15">
       <headerBar />
     </el-header>
     <el-container>
-      <el-aside class="w-[200px] mt-[2px]">
+      <el-aside class="w-50 mt-0.5">
         <menus />
       </el-aside>
       <el-main>

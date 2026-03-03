@@ -43,6 +43,15 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('../pages/article/index.vue'),
         children: [
           {
+            path: 'info',
+            meta: {
+              title: '文章详情',
+              hidden: true
+            },
+            name: 'articleInfo',
+            component: () => import('../pages/article/info.vue')
+          },
+          {
             path: 'list',
             meta: {
               title: '文章列表'
@@ -70,9 +79,6 @@ export const routes: RouteRecordRaw[] = [
   { 
     path: '/login', 
     component: () =>  import('../pages/login/index.vue'),
-    meta: {
-      hidden: true
-    },
   },
   { 
     path: '/:pathMatch(.*)', 

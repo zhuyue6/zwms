@@ -63,6 +63,9 @@
         // 如果当前路由Path前和parentPath结尾有/就不需要再添加
         joinStr = ''
       }
+      if (route?.meta?.hidden) {
+        continue
+      }
       const path = `${parentPath}${joinStr}${route.path}`
       const title = route?.meta?.title ?? ''
       const name = route?.name ?? ''

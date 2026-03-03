@@ -47,6 +47,12 @@ export function getArticleList() {
   return post('/article/getArticleList')
 }
 
+export function getArticleInfo(id: number) {
+  return post('/article/getArticleInfo', {
+    id,
+  })
+}
+
 export function createArticle(createArticleDto: CreateArticleDto) {
   return post('/article/createArticle', createArticleDto)
 }

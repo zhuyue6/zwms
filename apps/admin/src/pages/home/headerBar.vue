@@ -4,7 +4,7 @@
       <el-image class="h-full" :src="logoUrl" fit="full" />
     </div>
     <div class="h-full flex items-center w-full justify-end">
-      <div class="flex items-center mr-[30px]">
+      <div class="flex items-center mr-7.5">
         <div class="mr-2">{{ userInfo.name }}</div>
         <el-popover 
           placement="bottom" 

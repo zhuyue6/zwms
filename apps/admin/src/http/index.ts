@@ -37,6 +37,3 @@ http.interceptors.response.use((res)=>{
   ElMessage.error('网络错误')
   return  Promise.reject(error)
 })
-
-
-http.defaults.baseURL = 'http://localhost:3000'

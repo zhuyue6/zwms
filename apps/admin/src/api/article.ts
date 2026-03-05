@@ -1,4 +1,4 @@
-import { get, post } from '../http'
+import { get, post, http } from '../http'
 import { Tag, Category, Article } from '../types'
 
 interface CreateTagDto extends Pick<Tag, 'tagName'> {}
@@ -12,55 +12,55 @@ interface UpdateArticleDto extends Pick<Article, 'categoryId' | 'tagId' | 'title
 interface DelArticleDto extends Pick<Article, 'id'> {}
 
 export function getTagList() {
-  return post('/article/getTagList')
+  return post('/api/article/getTagList')
 }
 
 export function createTag(createTagDto: CreateTagDto) {
-  return post('/article/createTag', createTagDto)
+  return post('/api/article/createTag', createTagDto)
 }
 
 export function updateTag(updateTagDto: UpdateTagDto) {
-  return post('/article/updateTag', updateTagDto)
+  return post('/api/article/updateTag', updateTagDto)
 }
 
 export function deleteTag(delTagDto: DelTagDto) {
-  return post('/article/deleteTag', delTagDto)
+  return post('/api/article/deleteTag', delTagDto)
 }
 
 export function getCategoryList() {
-  return post('/article/getCategoryList')
+  return post('/api/article/getCategoryList')
 }
 
 export function createCategory(createCategoryDto: CreateCategoryDto) {
-  return post('/article/createCategory', createCategoryDto)
+  return post('/api/article/createCategory', createCategoryDto)
 }
 
 export function updateCategory(updateCategoryDto: UpdateCategoryDto) {
-  return post('/article/updateCategory', updateCategoryDto)
+  return post('/api/article/updateCategory', updateCategoryDto)
 }
 
 export function deleteCategory(delCategoryDto: DelCategoryDto) {
-  return post('/article/deleteCategory', delCategoryDto)
+  return post('/api/article/deleteCategory', delCategoryDto)
 }
 
 export function getArticleList() {
-  return post('/article/getArticleList')
+  return post('/api/article/getArticleList')
 }
 
 export function getArticleInfo(id: number) {
-  return post('/article/getArticleInfo', {
+  return post('/api/article/getArticleInfo', {
     id,
   })
 }
 
 export function createArticle(createArticleDto: CreateArticleDto) {
-  return post('/article/createArticle', createArticleDto)
+  return post('/api/article/createArticle', createArticleDto)
 }
 
 export function updateArticle(updateArticleDto: UpdateArticleDto) {
-  return post('/article/updateArticle', updateArticleDto)
+  return post('/api/article/updateArticle', updateArticleDto)
 }
 
 export function deleteArticle(delArticleDto: DelArticleDto) {
-  return post('/article/deleteArticle', delArticleDto)
+  return post('/api/article/deleteArticle', delArticleDto)
 }

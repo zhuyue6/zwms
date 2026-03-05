@@ -22,7 +22,11 @@ import { ArticleModule } from './article/article.module'
     PrismaModule,
     RedisModule,
     OssModule,
-    ConfigModule,
+    ConfigModule.forRoot({
+      isGlobal: true, // 全局生效，所有模块无需重复导入
+      envFilePath: '.env', // 明确指定 .env 路径（根目录），避免路径问题
+      ignoreEnvFile: false, // 不忽略 .env 文件（默认 false，显式写更稳妥）
+    }),
     MulterModule.register({
       storage: memoryStorage(),
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB限制

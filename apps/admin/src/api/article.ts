@@ -7,8 +7,12 @@ interface DelTagDto extends Pick<Tag, 'id'> {}
 interface CreateCategoryDto extends Pick<Category, 'categoryName'> {}
 interface UpdateCategoryDto extends Pick<Category, 'categoryName' | 'id'> {}
 interface DelCategoryDto extends Pick<Category, 'id'> {}
-interface CreateArticleDto extends Pick<Article, 'categoryId' | 'tagId' | 'title'> {}
-interface UpdateArticleDto extends Pick<Article, 'categoryId' | 'tagId' | 'title'> {}
+interface CreateArticleDto extends Pick<Article, 'categoryId' | 'title'> {
+  tagId?: number
+}
+interface UpdateArticleDto extends Pick<Article, 'id' | 'categoryId' | 'title'> {
+  tagId?: number
+}
 interface DelArticleDto extends Pick<Article, 'id'> {}
 
 export function getTagList() {

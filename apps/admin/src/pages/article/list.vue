@@ -3,43 +3,19 @@
     <div class="flex mb-2">
       <el-button type="primary" @click="createPrev">创建</el-button>
     </div>
-    <el-table :data="state.tableData" stripe>
-      <el-table-column 
-        prop="id" 
-        label="id"
-      />
-      <el-table-column 
-        prop="title" 
-        label="文章标题"
-      />
-      <el-table-column 
-        prop="categoryName" 
-        label="类别"
-      />
-      <el-table-column 
-        prop="tagName" 
-        label="标签"
-      />
-      <el-table-column 
-        prop="creatorName" 
-        label="创建人"
-      />
-      <el-table-column 
-        prop="updateTime" 
-        label="更新时间"
-      />
-      <el-table-column 
-        :label="$t('common.operate')" 
-      >
-        <template #default="{ row }">
-          <div v-if="row.permission !== 0">
-            <el-button type="text" @click="viewItem(row)">查看详情</el-button>
-            <el-button type="text" @click="editItem(row)">编辑</el-button>
-            <el-button type="text" @click="deleteItem(row)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+    <Table
+      ref="tableRef"
+      :fetch="getList"
+      :columns="columns"
+    >
+      <template #operate="{ row }">
+        <div v-if="row.permission !== 0">
+          <el-button type="text" @click="viewItem(row)">查看详情</el-button>
+          <el-button type="text" @click="editItem(row)">编辑</el-button>
+          <el-button type="text" @click="deleteItem(row)">删除</el-button>
+        </div>
+      </template>
+    </Table>
     <el-dialog
       v-model="state.dialogVisible"
       :title="state.type === 'create' ? '创建文章' : '编辑文章'"
@@ -103,20 +79,30 @@
   import { ElMessageBox } from 'element-plus'
   import { validate } from '../../shared'
   import { useRouter } from 'vue-router'
+  import Table from '../../components/table.vue'
 
   const i18n = useI18n()
   const router = useRouter()
+
+  const columns = [
+    { label: 'id', prop: 'id' },
+    { label: '文章标题', prop: 'title' },
+    { label: '类别', prop: 'categoryName' },
+    { label: '标签', prop: 'tagName' },
+    { label: '创建人', prop: 'creatorName' },
+    { label: '更新时间', prop: 'updateTime' },
+    { label: '操作', slot: 'operate' },
+  ]
 
   const rules = {
     categoryId: [validate.validateRequire()],
   }
 
   const state = reactive({
-    tableData: [],
     dialogVisible: false,
     type: 'create',
-    categoryList: [],
-    tagList: [],
+    categoryList: [] as { id: number; categoryName: string }[],
+    tagList: [] as { id: number; tagName: string }[],
     selected: {
       id: '',
       title: '',
@@ -126,14 +112,23 @@
   })
 
   const formRef = ref()
+  const tableRef = ref()
 
   async function getList() {
     const res = await ARTICLERAPI.getArticleList()
-    const resTag = await ARTICLERAPI.getTagList()
-    state.tagList = resTag.list
-    const resCategory = await ARTICLERAPI.getCategoryList()
-    state.categoryList = resCategory.list
-    state.tableData = res.list
+    return {
+      total: res.total ?? res.list?.length ?? 0,
+      data: res.list ?? [],
+    }
+  }
+
+  async function loadOptions() {
+    const [resTag, resCategory] = await Promise.all([
+      ARTICLERAPI.getTagList(),
+      ARTICLERAPI.getCategoryList(),
+    ])
+    state.tagList = resTag.list ?? []
+    state.categoryList = resCategory.list ?? []
   }
 
   function createPrev() {
@@ -155,17 +150,17 @@
           await ARTICLERAPI.createArticle({
             title: state.selected.title,
             categoryId: Number(state.selected.categoryId),
-            tagId: state.selected.tagId ? Number(state.selected.tagId) :  undefined,
+            ...(state.selected.tagId ? { tagId: Number(state.selected.tagId) } : {}),
           })
         } else {
           await ARTICLERAPI.updateArticle({
             id: Number(state.selected.id),
             title: state.selected.title,
             categoryId: Number(state.selected.categoryId),
-            tagId: state.selected.tagId ? Number(state.selected.tagId) :  undefined,
+            ...(state.selected.tagId ? { tagId: Number(state.selected.tagId) } : {}),
           })
         }
-        getList()
+        tableRef.value?.load()
         dialogVisible(false)
       }
     })
@@ -194,10 +189,10 @@
     await ARTICLERAPI.deleteArticle({
       id: Number(item.id)
     })
-    getList()
+    tableRef.value?.load()
   }
 
   onMounted(() => {
-    getList()
+    loadOptions()
   })
 </script>

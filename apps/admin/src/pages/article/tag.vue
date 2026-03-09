@@ -3,26 +3,18 @@
     <div class="flex mb-2">
       <el-button type="primary" @click="createTagPrev">创建</el-button>
     </div>
-    <el-table :data="state.tableData" stripe>
-      <el-table-column 
-        prop="id" 
-        label="id"
-      />
-      <el-table-column 
-        prop="tagName" 
-        label="标签名称"
-      />
-      <el-table-column 
-        :label="$t('common.operate')" 
-      >
-        <template #default="{ row }">
-          <div v-if="row.permission !== 0">
-            <el-button type="text" @click="editTag(row)">编辑</el-button>
-            <el-button type="text" @click="deleteTag(row)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+    <Table
+      ref="tableRef"
+      :fetch="getList"
+      :columns="columns"
+    >
+      <template #operate="{ row }">
+        <div v-if="row.permission !== 0">
+          <el-button type="text" @click="editTag(row)">编辑</el-button>
+          <el-button type="text" @click="deleteTag(row)">删除</el-button>
+        </div>
+      </template>
+    </Table>
     <el-dialog
       v-model="state.dialogVisible"
       :title="state.type === 'create' ? '创建标签' : '编辑标签'"
@@ -53,20 +45,23 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, onMounted, ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
+  import { reactive, ref } from 'vue'
   import { article as ARTICLERAPI } from '../../api'
   import { ElMessageBox } from 'element-plus'
   import { validate } from '../../shared'
+  import Table from '../../components/table.vue'
 
-  const i18n = useI18n()
+  const columns = [
+    { label: 'id', prop: 'id' },
+    { label: '标签名称', prop: 'tagName' },
+    { label: '操作', slot: 'operate' },
+  ]
 
   const rules = {
     tagName: [validate.validateRequire()],
   }
 
   const state = reactive({
-    tableData: [],
     dialogVisible: false,
     type: 'create',
     selected: {
@@ -76,10 +71,14 @@
   })
 
   const formRef = ref()
+  const tableRef = ref()
 
   async function getList() {
     const res = await ARTICLERAPI.getTagList()
-    state.tableData = res.list
+    return {
+      total: res.total ?? res.list?.length ?? 0,
+      data: res.list ?? [],
+    }
   }
 
   function createTagPrev() {
@@ -105,7 +104,7 @@
             tagName: state.selected.tagName
           })
         }
-        getList()
+        tableRef.value?.load()
         dialogVisible(false)
       }
     })
@@ -123,10 +122,6 @@
     await ARTICLERAPI.deleteTag({
       id: Number(tag.id)
     })
-    getList()
+    tableRef.value?.load()
   }
-
-  onMounted(() => {
-    getList()
-  })
 </script>

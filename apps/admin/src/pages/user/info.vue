@@ -42,7 +42,6 @@
     interface State {
       formData: Partial<Record<string, any>>
       compareData: Partial<Record<string, any>>
-      type: 'view' | 'edit'
     }
   
     const rules = {

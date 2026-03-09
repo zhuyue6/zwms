@@ -3,7 +3,7 @@
     <div class="flex mb-2">
       <el-button type="primary" @click="createUserPrev">创建</el-button>
     </div>
-    <el-table :data="state.tableData" stripe>
+    <!-- <el-table :data="state.tableData" stripe>
       <el-table-column 
         prop="name" 
         :label="$t('user.name')"
@@ -30,7 +30,21 @@
           </div>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
+    <Table 
+      :fetch="getList"
+      :columns="columns"
+    >
+      <template #permission="{ row }">
+        {{ getPermissionText(row.permission) }}
+      </template>
+      <template #operation="{ row }">
+        <div v-if="row.permission !== 0">
+          <el-button type="text" @click="editUser(row)">编辑</el-button>
+          <el-button type="text" @click="deleteUser(row)">删除</el-button>
+        </div>
+      </template>
+    </Table>
     <el-dialog
       v-model="state.dialogVisible"
       :title="state.type === 'create' ? '创建用户' : '编辑用户'"
@@ -73,6 +87,7 @@
   import { user as USERAPI } from '../../api'
   import { ElMessageBox } from 'element-plus'
   import { validate } from '../../shared'
+  import Table from '../../components/table.vue'
 
   const i18n = useI18n()
 
@@ -80,6 +95,23 @@
     name: [validate.validateName()],
     password: [validate.validatePassword()]
   }
+
+  const columns = [
+    {
+      label: '用户名',
+      prop: 'name'
+    },
+    {
+      label: '权限',
+      prop: 'permission',
+      slot: 'permission'
+    },
+    {
+      label: '操作',
+      prop: 'operation',
+      slot: 'operation'
+    } 
+  ]
 
   const state = reactive({
     tableData: [],
@@ -105,6 +137,10 @@
   async function getList() {
     const res = await USERAPI.getList()
     state.tableData = res.list
+    return {
+      total: res.total,
+      data: res.list
+    }
   }
 
   function createUserPrev() {

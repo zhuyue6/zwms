@@ -4,17 +4,19 @@ const http = axios.create({
   timeout: 100000,
 })
 
-function get<T, P=object>(url: string, params: P, config?: AxiosRequestConfig) {
+function get<T=any>(url: string, params?: Record<string, any>, config?: AxiosRequestConfig) {
   return http.get<T>(url, {
     ...config,
-    params,
+    params: params ?? {},
   })
 }
 
-function post<T, P=object>(url: string, params?: P, config?: AxiosRequestConfig) {
+function post<T=any>(url: string, params?: Record<string, any>, config?: AxiosRequestConfig) {
   return http.post<T>(url, params ?? {}, config)
 }
 
 export { get, post }
 
 export default http
+
+export type { AxiosRequestConfig }

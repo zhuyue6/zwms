@@ -1,1 +1,3 @@
-vue 3 koa 模版， monorepo 仓库
+
+# 启动
+先构建packages之后再启动项目

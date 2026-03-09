@@ -7,7 +7,8 @@
   "scripts": {
     "prepare": "husky install",
     "lint-staged": "lint-staged --quiet",
-    "dev": "node scripts/dev.js",
+    "dev": "npm run build && npm run admin && npm run service",
+    "admin": "pnpm --filter @zwms/admin start",
     "service": "pnpm --filter @zwms/service start:dev",
     "build": "node scripts/build.js"
   },

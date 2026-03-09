@@ -1,13 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "@zwms/*": [
-        "./apps/*/src",
-        "./packages/*/src"
-      ]
-    }
-  },
   "include": ["src/**/*"],
   "files": ["type.d.ts"]
 }

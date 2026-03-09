@@ -19,10 +19,7 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "allowJs": true,
-    "baseUrl": ".",
-    "paths": {
-      "@zwms/*": ["./apps/*/src", "./packages/*/src"]
-    }
+    "baseUrl": "."
   },
   "include": ["packages/**/*"],
   "exclude": ["node_modules"],

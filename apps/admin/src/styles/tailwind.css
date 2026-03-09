@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/*
+  Tailwind v4 的 @import "tailwindcss" 和 @layer / @apply 是给 PostCSS/Tailwind 处理的。入口是 .scss 时，
+  会先被 Sass 编译，Sass 不认识这些指令，要么报错要么被错误处理，所以会出现「用 CSS 正常、用 SCSS 不生效」的情况。
+*/
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-3xl font-bold;
+  }
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+  h4 {
+    @apply text-xl font-semibold;
+  }
+  h5 {
+    @apply text-lg font-medium;
+  }
+  h6 {
+    @apply text-base font-medium;
+  }
+}

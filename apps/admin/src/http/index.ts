@@ -1,8 +1,16 @@
-import { get, post, default as http } from '@zwms/http'
+import { get as httpGet, post as httpPost, default as http, AxiosRequestConfig } from '@zwms/http'
 import { useToken } from '../shared'
 import { ElMessage } from 'element-plus'
 import router from '../router'
-export { get, post, http }
+export { http }
+
+export function post<T=any>(url: string, config?: AxiosRequestConfig): Awaited<T> {
+  return httpPost(url, config) as Awaited<T>
+}
+
+export function get<T=any>(url: string, params?: object, config?: AxiosRequestConfig) {
+  return httpGet<T>(url, params, config) as Awaited<T>
+}
 
 
 http.interceptors.request.use((config)=>{
@@ -19,7 +27,7 @@ http.interceptors.response.use((res)=>{
     return Promise.reject()
   }
 
-  if (res.state === 401) {
+  if (res.status === 401) {
     router.push({
       path: '/login'
     })

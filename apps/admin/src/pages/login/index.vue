@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full h-full flex">
-    <div class="w-full bg-[#eee] flex items-center justify-center">
-      <div class="p-8 bg-[#fff] rounded-md">
+  <div class="w-full h-full flex bg-[url(/imgs/bgs/bg.jpg)] bg-cover">
+    <div class="w-full flex items-center justify-center">
+      <div class="p-8 bg-linear-to-r from-white to-green-500/80 rounded-md">
         <div class="flex flex-col w-[300px]">
           <el-form 
             :model="state.formData"
             label-width="auto"
-            class="w-max-[600px]"
+            class="w-max-[600px] text-white"
             :rules="rules"
             status-icon
             ref="formRef"

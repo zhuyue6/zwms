@@ -6,7 +6,6 @@ import { build } from 'vite'
 import chalk from 'chalk'
 import dts from 'vite-plugin-dts';
 
-
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 async function compile(name) {

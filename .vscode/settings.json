@@ -1,0 +1,8 @@
+{
+  "css.lint.unknownAtRules": "ignore"
+  /* 
+    @apply 是 Tailwind 的合法指令，构建时由 Tailwind 处理。报错来自 VS Code/Cursor 自带的 CSS 校验，
+    它只认标准 CSS，不认识 Tailwind 的 at-rule。把 css.lint.unknownAtRules 设为 "ignore" 后，这类提示会消失，构建和运行不受影响。
+    若安装了 Tailwind CSS IntelliSense 扩展，也会正确识别 @apply，可按需选用。
+  */
+}

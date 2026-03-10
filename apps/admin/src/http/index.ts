@@ -4,8 +4,8 @@ import { ElMessage } from 'element-plus'
 import router from '../router'
 export { http }
 
-export function post<T=any>(url: string, config?: AxiosRequestConfig): Awaited<T> {
-  return httpPost(url, config) as Awaited<T>
+export function post<T=any>(url: string, params?: Record<string, any>, config?: AxiosRequestConfig): Awaited<T> {
+  return httpPost(url, params, config) as Awaited<T>
 }
 
 export function get<T=any>(url: string, params?: object, config?: AxiosRequestConfig) {

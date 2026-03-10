@@ -50,6 +50,7 @@
   import { ElMessageBox } from 'element-plus'
   import { validate } from '../../shared'
   import Table from '../../components/table.vue'
+  import type { PageDto } from '../../types'
 
   const columns = [
     { label: 'id', prop: 'id' },
@@ -73,10 +74,10 @@
   const formRef = ref()
   const tableRef = ref()
 
-  async function getList() {
-    const res = await ARTICLERAPI.getTagList()
+  async function getList({ currentPage, pageSize }: PageDto) {
+    const res = await ARTICLERAPI.getTagList({ currentPage, pageSize })
     return {
-      total: res.total ?? res.list?.length ?? 0,
+      total: res.total ?? res.list?.length ?? 0,  
       data: res.list ?? [],
     }
   }

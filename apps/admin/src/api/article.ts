@@ -1,5 +1,5 @@
 import { get, post, http } from '../http'
-import { Tag, Category, Article } from '../types'
+import { Tag, Category, Article, PageDto } from '../types'
 
 interface CreateTagDto extends Pick<Tag, 'tagName'> {}
 interface UpdateTagDto extends Pick<Tag, 'tagName' | 'id'> {}
@@ -15,8 +15,8 @@ interface UpdateArticleDto extends Pick<Article, 'id' | 'categoryId' | 'title'> 
 }
 interface DelArticleDto extends Pick<Article, 'id'> {}
 
-export function getTagList() {
-  return post('/api/article/getTagList')
+export function getTagList(pageDto: PageDto) {
+  return post('/api/article/getTagList', pageDto)
 }
 
 export function createTag(createTagDto: CreateTagDto) {
@@ -31,8 +31,8 @@ export function deleteTag(delTagDto: DelTagDto) {
   return post('/api/article/deleteTag', delTagDto)
 }
 
-export function getCategoryList() {
-  return post('/api/article/getCategoryList')
+export function getCategoryList(pageDto: PageDto) {
+  return post('/api/article/getCategoryList', pageDto)
 }
 
 export function createCategory(createCategoryDto: CreateCategoryDto) {
@@ -47,8 +47,8 @@ export function deleteCategory(delCategoryDto: DelCategoryDto) {
   return post('/api/article/deleteCategory', delCategoryDto)
 }
 
-export function getArticleList() {
-  return post('/api/article/getArticleList')
+export function getArticleList(pageDto: PageDto) {
+  return post('/api/article/getArticleList', pageDto)
 }
 
 export function getArticleInfo(id: number) {

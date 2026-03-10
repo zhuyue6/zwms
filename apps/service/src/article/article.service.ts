@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { PrismaService } from '../modules/prisma.service';
+import { ModelService, PageDto } from '../models/model.service';
 import { 
   type CreateArticleTagDto, 
   ArticleTagDto, 
@@ -16,148 +16,58 @@ import {
   GetArticleDto,
   ArticleDto
  } from './article.dto';
-import { plainToClass } from 'class-transformer'
+ import { plainToClass } from 'class-transformer'
 
 @Injectable()
 export class ArticleService {
   constructor(
-    private prisma: PrismaService,
+    private modelService: ModelService,
     @Inject(REQUEST) private readonly req: Request,
   ) {}
   async createTag(createArticleTagDto: CreateArticleTagDto) {
-    // 1. 查询tag是否存在
-    const tag = await this.prisma.articleTag.findFirst({
-      where: { tagName: createArticleTagDto.tagName },
-    });
-    if (tag) {
-      return {
-        message: '已经存在该名称的tag',
-      }
-    }
-    await this.prisma.articleTag.create({
-      data: {
-        tagName: createArticleTagDto.tagName,
-      }
-    })
+    await this.modelService.create('articleTag',  createArticleTagDto, { tagName: createArticleTagDto.tagName }, '已经存在该名称的tag');
   }
   async updateTag(updateArticleTagDto: UpdateArticleTagDto) {
-    // 1. 查询tag是否存在
-    const tag = await this.prisma.articleTag.findFirst({
-      where: { id: updateArticleTagDto.id },
-    });
-    if (tag) {
-      await this.prisma.articleTag.update({
-        where: { id: updateArticleTagDto.id },
-        data: {
-          tagName: updateArticleTagDto.tagName
-        }
-      });
-    }
+    await this.modelService.update('articleTag', { id: updateArticleTagDto.id }, updateArticleTagDto, '已经存在该名称的tag');
   }
   async deleteTag(deleteArticleTagDto: DeleteArticleTagDto) {
-    // 1. 查询tag是否存在
-    const tag = await this.prisma.articleTag.findFirst({
-      where: { id: deleteArticleTagDto.id },
-    });
-    if (tag) {
-      await this.prisma.articleTag.delete({
-        where: { id: deleteArticleTagDto.id },
-      });
-    }
+    await this.modelService.delete('articleTag', { id: deleteArticleTagDto.id }, '已经存在该名称的tag');
   }
-  async getTagList() {
-    const list = await this.prisma.articleTag.findMany();
-    const formatList = list.map((item)=>{
-      return plainToClass(ArticleTagDto, item);
-    })
-    return {
-      list: formatList,
-    };
+  async getTagList(pageDto: PageDto) {
+    const data = await this.modelService.paginate('articleTag', pageDto, undefined, ArticleTagDto);
+    return data
   }
   async createCategory(createArticleCategoryDto: CreateArticleCategoryDto) {
-    const category = await this.prisma.articleCategory.findFirst({
-      where: { categoryName: createArticleCategoryDto.categoryName },
-    });
-    if (category) {
-      return {
-        message: '已经存在该名称的category',
-      }
-    }
-    await this.prisma.articleCategory.create({
-      data: {
-        categoryName: createArticleCategoryDto.categoryName,
-      }
-    })
+    await this.modelService.create('articleCategory', createArticleCategoryDto, createArticleCategoryDto, '已经存在该名称的category');
   }
   async updateCategory(updateArticleCategoryDto: UpdateArticleCategoryDto) {
-    const category = await this.prisma.articleCategory.findFirst({
-      where: { id: updateArticleCategoryDto.id },
-    });
-    if (category) {
-      await this.prisma.articleCategory.update({
-        where: { id: updateArticleCategoryDto.id },
-        data: {
-          categoryName: updateArticleCategoryDto.categoryName
-        }
-      });
-    }
+    await this.modelService.update('articleCategory', { id: updateArticleCategoryDto.id }, updateArticleCategoryDto);
   }
   async deleteCategory(deleteArticleCategoryDto: DeleteArticleCategoryDto) {
-    const category = await this.prisma.articleCategory.findFirst({
-      where: { id: deleteArticleCategoryDto.id },
-    });
-    if (category) {
-      await this.prisma.articleCategory.delete({
-        where: { id: deleteArticleCategoryDto.id },
-      });
-    }
+    await this.modelService.delete('articleCategory', { id: deleteArticleCategoryDto.id });
   }
-  async getCategoryList() {
-    const list = await this.prisma.articleCategory.findMany();
-    const formatList = list.map((item)=>{
-      return plainToClass(ArticleCategoryDto, item);
-    })
-    return {
-      list: formatList,
-    };
+  async getCategoryList(pageDto: PageDto) {
+    const data = await this.modelService.paginate('articleCategory', pageDto, undefined, ArticleCategoryDto);
+    return data;
   }
   async createArticle(createArticleDto: CreateArticleDto) {
     const userId = (this.req as any).user?.userId;
-    await this.prisma.article.create({
-      data: {
-        title: createArticleDto.title,
-        tagId: createArticleDto.tagId,
-        categoryId: createArticleDto.categoryId,
-        createBy: userId
-      }
-    })
+    await this.modelService.create('article', {
+      title: createArticleDto.title,
+      tagId: createArticleDto.tagId,
+      categoryId: createArticleDto.categoryId,
+      createBy: userId
+    });
   }
   async updateArticle(updateArticleDto: UpdateArticleDto) {
-    const matcher = await this.prisma.article.findFirst({
-      where: { id: updateArticleDto.id },
-    });
-    if (matcher) {
-      const updated: Partial<UpdateArticleDto> = updateArticleDto
-      await this.prisma.article.update({
-        where: { 
-          id: updateArticleDto.id
-        },
-        data: updated
-      });
-    }
+    await this.modelService.update('article', { id: updateArticleDto.id }, updateArticleDto);
   }
   async deleteArticle(deleteArticleDto: DeleteArticleDto) {
-    const article = await this.prisma.article.findFirst({
-      where: { id: deleteArticleDto.id },
-    });
-    if (article) {
-      await this.prisma.article.delete({
-        where: { id: deleteArticleDto.id },
-      });
-    }
+    await this.modelService.delete('article', { id: deleteArticleDto.id });
+
   }
-  async getArticleList() {
-    const list = await this.prisma.article.findMany({
+  async getArticleList(pageDto: PageDto) {
+    const data = await this.modelService.paginate('article', pageDto, {
       orderBy: [
         { updateTime: 'desc' }
       ],
@@ -194,7 +104,7 @@ export class ArticleService {
         status: 1
       }
     });
-    const formatList = list.map((item)=>{
+    const formatList = data.list.map((item)=>{
       const article: object = { 
         ...item, 
         categoryName: item.category.categoryName,
@@ -210,18 +120,14 @@ export class ArticleService {
       );
     })
     return {
+      ...data,
       list: formatList,
     };
   }
   async getArticleInfo(getArticleDto: GetArticleDto) {
-    const article = await this.prisma.article.findFirst({
-      where: {
+    const article = await this.modelService.findOne('article', {
         id: getArticleDto.id
-      }
-    })
-    return plainToClass(
-      ArticleDto, 
-      article
-    )
+    }, ArticleDto);
+    return article
   }
 }

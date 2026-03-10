@@ -1,4 +1,5 @@
 export interface JWTPayload {
   name: string;
-  sub: number;
+  id: number;
+  permission: number;
 }

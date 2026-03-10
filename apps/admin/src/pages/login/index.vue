@@ -14,8 +14,11 @@
             <el-form-item label="用户名"  prop="name">
               <el-input v-model="state.formData.name" />
             </el-form-item>
-            <el-form-item label="密码"  prop="password">
+            <el-form-item label="密码" prop="password" v-if="state.type !== 'register'">
               <el-input v-model="state.formData.password" type="password" show-password />
+            </el-form-item>
+            <el-form-item label="密码" prop="registerPassword" v-if="state.type === 'register'">
+              <el-input v-model="state.formData.registerPassword" type="password" show-password  />
             </el-form-item>
           </el-form> 
           <el-button class="mt-4" type="primary" @click="submit">{{ submitText }}</el-button>
@@ -44,7 +47,8 @@
 
   const rules: FormRules = {
     name: [validate.validateName()],
-    password: [validate.validatePassword()]
+    password: [validate.validateRequire()],
+    registerPassword: [validate.validatePassword()]
   }
 
   const state: State = reactive({
@@ -52,7 +56,7 @@
     formData: {
       name: '',
       password: '',
-      newPassWord: ''
+      registerPassword: ''
     }
   })
 
@@ -80,8 +84,8 @@
     formRef.value?.validate(async (valid)=>{
       if (valid) {
         const params = {
-          name: state.formData.name as string,
-          password: state.formData.password as string
+          name:   state.formData.name as string,
+          password: state.type === 'login' ? state.formData.password as string : state.formData.registerPassword as string
         }
         if (state.type === 'login') {
           const { token } = await user.login(params)

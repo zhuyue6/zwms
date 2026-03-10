@@ -6,6 +6,11 @@ export interface User {
   age: number
 }
 
+export interface PageDto {
+  currentPage: number
+  pageSize: number
+}
+
 export interface Tag {
   id: number
   tagName: string

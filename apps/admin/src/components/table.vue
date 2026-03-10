@@ -68,7 +68,7 @@
     /** 静态数据，当未使用 fetch 时生效 */
     data?: TableData
     /** 请求方法（优先级高于 data），返回 Promise<{ total, data }>，参数为分页信息（当 page.visible 时传入） */
-    fetch?: (params?: PageParams) => Promise<TableData>
+    fetch?: (params: PageParams) => Promise<TableData>
     /** 分页配置，用于渲染与同步分页 */
     pageVisible?: boolean
     page?: PageParams

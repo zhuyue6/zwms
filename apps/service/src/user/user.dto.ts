@@ -2,7 +2,7 @@ import { IsName, IsPassword } from '../common/pipes/validator.pipe';
 import {
   IsOptional,
   IsNumber,
-  IsString
+  IsNotEmpty
 } from 'class-validator';
 import { Expose, Exclude } from 'class-transformer'
 
@@ -26,7 +26,7 @@ export class UserDto {
 export class LoginDto implements Pick<UserDto, 'name' | 'password'> {
   @IsName()
   name: string;
-  @IsPassword()
+  @IsNotEmpty()
   password: string;
 }
 
@@ -38,6 +38,8 @@ export class RegisterDto implements Pick<UserDto, 'name' | 'password'> {
 }
 
 export class UpdateDto implements Pick<UserDto, 'name' | 'password'> {
+  @IsNumber()
+  id: number;
   @IsOptional()
   @IsName()
   name: string;

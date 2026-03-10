@@ -8,7 +8,8 @@ import {
 import { UserService } from './user.service';
 import { DeleteDto, LoginDto, RegisterDto, UpdateDto } from './user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from '../common/decorators';
+import { Public } from '../common/decorators';    
+import { PageDto } from 'src/models/model.service';
 
 @Controller('user')
 export class UserController {
@@ -41,8 +42,8 @@ export class UserController {
     return this.userService.uploaderAvatar(file);
   }
   @Post('/getList')
-  getList() {
-    return this.userService.getList();
+  getList(@Body() pageDto: PageDto) {
+    return this.userService.getList(pageDto);
   }
   @Post('/getInfo')
   getInfo() {

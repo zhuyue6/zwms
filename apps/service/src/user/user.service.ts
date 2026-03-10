@@ -1,16 +1,17 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { PrismaService } from '../modules/prisma.service';
-import  {type LoginDto, type RegisterDto, type UpdateDto,type DeleteDto, UserDto } from './user.dto';
+import { ModelService, type PageDto } from '../models/model.service';
+import { type LoginDto, type RegisterDto, type UpdateDto,type DeleteDto, UserDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { OssService } from '../common/oss/oss.service';
 import { TokenBlackListService } from '../common/blacklist/token.service';
 import { plainToClass } from 'class-transformer'
+import { BusinessException, ErrorCode } from '../common/errors';
 
 @Injectable()
 export class UserService {
   constructor(
-    private prisma: PrismaService,
+    private modelService: ModelService,
     private jwtService: JwtService,
     private ossService: OssService,
     private tokenBlackListService: TokenBlackListService,
@@ -26,24 +27,17 @@ export class UserService {
     // 连接数据库，查询用户名和密码
     const { name, password } = loginDto ?? {};
     // 1. 查询用户是否存在
-    const user = await this.prisma.user.findFirst({
-      where: { name },
-    });
+    const user = await this.modelService.findOne('user',  { name })
 
     if (!user || password !== user.password) {
       // 若不存在用户或者密码不一致则登录失败
-      return {
-        code: 10002,
-        message: '用户名或密码错误',
-        data: undefined,
-      };
+      throw new BusinessException(ErrorCode.USER_NAME_OR_PASSWORD_ERROR, '用户名或密码错误');
     }
     const payload = {
-      sub: user.id,
+      id: user.id,
+      permission: user.permission,
       name: user.name,
     };
-
-    Reflect.deleteProperty(user, password);
 
     // 登录成功，返回jwt_token
     const token = this.jwtService.sign(payload);
@@ -66,18 +60,13 @@ export class UserService {
     };
   }
   async update(updateDto: UpdateDto) {
-    const userId = (this.req as any).user?.userId;
+    const userPermission = (this.req as any).user?.userPermission;
     // 1. 查询用户是否存在
-    const user = await this.prisma.user.findFirst({
-      where: { id: userId },
-    });
+    const user = await this.modelService.findOne('user', { id: updateDto.id });
     if (user) {
       if (user.permission === 0) {
         // 管理员直接改，先不校验
-        await this.prisma.user.update({
-          where: { id: userId },
-          data: updateDto,
-        });
+        await this.modelService.update('user', { id: updateDto.id }, updateDto);
         return
       }
       // 判断原始密码是否正确
@@ -92,99 +81,46 @@ export class UserService {
         updateData.age = updateDto.age
       }
 
-      await this.prisma.user.update({
-        where: { id: userId },
-        data: updateData,
-      });
+      await this.modelService.update('user', { id: updateDto.id }, updateDto)
     }
   }
   async updateSafe(updateDto: UpdateDto, user: any) {
     if(updateDto.password !== user.password) {
-      return {
-        code: 10003,
-        message: '原始密码错误',
-        data: undefined,
-      };
+      throw new BusinessException(ErrorCode.USER_ORIGINAL_PASSWORD_ERROR, '原始密码错误');
     }
-    await this.prisma.user.update({
-      where: { id: user.userId },
-      data: {
-        password: updateDto.newPassword,
-      },
-    });
+    await this.modelService.update('user', { id: updateDto.id}, { password: updateDto.newPassword })
   }
   async delete(deleteDto: DeleteDto) {
     const { id } = deleteDto ?? {};
-    // 1. 查询用户是否存在
-    const user = await this.prisma.user.findFirst({
-      where: { id },
-    });
-    if (!user) {
-      return {
-        code: 10004,
-        message: '账号不存在',
-        data: undefined,
-      };
-    }
-    // 账号注册
-    await this.prisma.user.delete({
-      where: { id },
-    });
+    await this.modelService.delete('user', { id }, '该用户账号不存在')
   }
   async register(registerDto: RegisterDto) {
     const { name, password } = registerDto ?? {};
     // 1. 查询用户是否存在
-    const user = await this.prisma.user.findFirst({
-      where: { name },
-    });
-    if (user) {
-      return {
-        code: 10001,
-        message: '账号已存在',
-        data: undefined,
-      };
-    }
-    // 账号注册
-    await this.prisma.user.create({
-      data: {
-        name,
-        age: 10,
-        permission: 1,
-        password,
-      },
-    });
+    await this.modelService.create('user', {
+      name,
+      age: 10,
+      permission: 1,
+      password,
+    },  { name });
   }
   async uploaderAvatar(file: Express.Multer.File) {
     const url = await this.ossService.saveFile(file, 'avatar');
     const userId = (this.req as any).user?.userId;
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        avatarUrl: url,
-      },
-    });
+    await this.modelService.update('user', { id: userId }, { avatarUrl: url });
     return {
       url,
     };
   }
-  async getList() {
-    const list = await this.prisma.user.findMany();
-    const formatList = list.map((user)=>{
-      return plainToClass(UserDto, user)
-    })
-    return {
-      list: formatList
-    };
+  async getList(pageDto: PageDto) {
+    const data = await this.modelService.paginate('user', pageDto, undefined, UserDto);
+    return data;
   }
   async getInfo() {
     const userId = (this.req as any).user?.userId;
-    const user = await this.prisma.user.findFirst({
-      where: { id: userId },
-    });
-
-    const userDto = plainToClass(UserDto, user)
+    const user = await this.modelService.findOne('user', { id: userId }, UserDto);
     return {
-      user: userDto,
+      user,
     };
   }
 }

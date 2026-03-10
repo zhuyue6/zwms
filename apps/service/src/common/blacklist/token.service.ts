@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { RedisService } from '../../modules/redis.service';
+import { RedisService } from '../../models/redis.service';
 
 @Injectable()
 export class TokenBlackListService {

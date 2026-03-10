@@ -3,8 +3,7 @@ import { APP_INTERCEPTOR, APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { PrismaModule } from './modules/prisma.module';
-import { RedisModule } from './modules/redis.module';
+import { ModelModule } from './models/model.module';
 import { WinstonLoggerService } from './common/loggers/winston.service';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { MulterModule } from '@nestjs/platform-express';
@@ -19,8 +18,7 @@ import { ArticleModule } from './article/article.module'
   imports: [
     UserModule,
     ArticleModule,
-    PrismaModule,
-    RedisModule,
+    ModelModule,
     OssModule,
     ConfigModule.forRoot({
       isGlobal: true, // 全局生效，所有模块无需重复导入

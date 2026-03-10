@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    default-active="/list"
+    default-active="/userManager"
     router
   >
     <template

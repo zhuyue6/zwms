@@ -1,8 +1,8 @@
 import { get, post } from '../http'
-import { User } from '../types'
+import { User, PageParams } from '../types'
 
 type LoginRegisterParams = Pick<User, 'name' | 'password'>
-type UpdateParams = Partial<Pick<User, 'name' | 'password' | 'age'>>
+type UpdateParams = Partial<Pick<User, 'id' | 'name' | 'password' | 'age'>> | { newPassWord?: string }
 type DeleteParams = Partial<Pick<User, 'id'>>
 
 export function login(params: LoginRegisterParams) {
@@ -27,8 +27,8 @@ export function uploadAvatar(file: File) {
   return post('/api/user/uploaderAvatar', form)
 }
 
-export function getList() {
-  return post('/api/user/getList')
+export function getList({ currentPage, pageSize }: PageParams) {
+  return post('/api/user/getList', { currentPage, pageSize })
 }
 
 export function getInfo() {

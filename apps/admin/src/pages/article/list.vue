@@ -80,6 +80,7 @@
   import { validate } from '../../shared'
   import { useRouter } from 'vue-router'
   import Table from '../../components/table.vue'
+  import type { PageDto } from '../../types'
 
   const i18n = useI18n()
   const router = useRouter()
@@ -114,8 +115,8 @@
   const formRef = ref()
   const tableRef = ref()
 
-  async function getList() {
-    const res = await ARTICLERAPI.getArticleList()
+  async function getList({ currentPage, pageSize }: PageDto) {
+    const res = await ARTICLERAPI.getArticleList({ currentPage, pageSize })
     return {
       total: res.total ?? res.list?.length ?? 0,
       data: res.list ?? [],
@@ -124,8 +125,8 @@
 
   async function loadOptions() {
     const [resTag, resCategory] = await Promise.all([
-      ARTICLERAPI.getTagList(),
-      ARTICLERAPI.getCategoryList(),
+      ARTICLERAPI.getTagList({ currentPage: 1, pageSize: 100 }),
+      ARTICLERAPI.getCategoryList({ currentPage: 1, pageSize: 100 }),
     ])
     state.tagList = resTag.list ?? []
     state.categoryList = resCategory.list ?? []

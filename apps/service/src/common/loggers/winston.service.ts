@@ -2,7 +2,7 @@ import * as winston from 'winston';
 import { ConfigService } from '@nestjs/config';
 import { Injectable, LoggerService } from '@nestjs/common';
 
-@Injectable()
+
 /**
  * 为什么要使用winston， winston满足了dev 环境打印，生产环境文件存储logger的需求
  * winston logger 服务要注意哪一些点：
@@ -10,6 +10,7 @@ import { Injectable, LoggerService } from '@nestjs/common';
  * 2.实现输出的环境判定
  * 3.通用的输出点需要处理，如http filter里面的错误处理
  */
+@Injectable()
 export class WinstonLoggerService implements LoggerService {
   private logger: winston.Logger;
   constructor(private configService: ConfigService) {
@@ -34,7 +35,7 @@ export class WinstonLoggerService implements LoggerService {
             winston.format.colorize(), // 彩色输出
             winston.format.simple(), // 简化格式（非JSON）
           ),
-        }),
+        })
       );
     }
 

@@ -29,6 +29,7 @@ import { user } from '../../api'
 import { validate } from '../../shared'
 import type { FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '../../store'
 
 interface State {
   passwordFormData: {
@@ -46,6 +47,7 @@ const state: State = reactive({
   }
 })
 
+const userStore = useUserStore()
 const i18n = useI18n()
 const passwordFormRef = ref()
 const passwordRules: FormRules = {
@@ -96,7 +98,9 @@ const passwordRules: FormRules = {
 function submit() {
    passwordFormRef.value?.validate(async (valid) => {
     if (valid) {
+      const { id } = userStore.info
       await user.update({
+        id,
         newPassWord: state.passwordFormData.newPassword,
         password: state.passwordFormData.password
       })

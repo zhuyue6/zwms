@@ -7,11 +7,11 @@ export const routes: RouteRecordRaw[] = [
     name: 'home',
     children: [
       {
-        path: 'list',
+        path: 'userManager',
         meta: {
           title: '用户管理'
         },
-        component: () => import('../pages/user/list.vue')
+        component: () => import('../pages/user/userManager.vue')
       },
       {
         path: 'user', 
@@ -74,7 +74,7 @@ export const routes: RouteRecordRaw[] = [
         ]
       }
     ],
-    redirect: '/user'
+    redirect: '/userManager'
   },
   { 
     path: '/login', 

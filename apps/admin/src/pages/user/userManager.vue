@@ -3,37 +3,10 @@
     <div class="flex mb-2">
       <el-button type="primary" @click="createUserPrev">创建</el-button>
     </div>
-    <!-- <el-table :data="state.tableData" stripe>
-      <el-table-column 
-        prop="name" 
-        :label="$t('user.name')"
-      />
-      <el-table-column 
-        prop="age" 
-        :label="$t('user.age')"
-      />
-      <el-table-column 
-        prop="permission"
-        :label="$t('user.permission')" 
-      >
-        <template #default="{ row }">
-          {{ getPermissionText(row.permission) }}
-        </template>
-      </el-table-column>
-      <el-table-column 
-        :label="$t('common.operate')" 
-      >
-        <template #default="{ row }">
-          <div v-if="row.permission !== 0">
-            <el-button type="text" @click="editUser(row)">编辑</el-button>
-            <el-button type="text" @click="deleteUser(row)">删除</el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table> -->
     <Table 
       :fetch="getList"
       :columns="columns"
+      ref="tabelRef"
     >
       <template #permission="{ row }">
         {{ getPermissionText(row.permission) }}
@@ -61,7 +34,7 @@
           prop="name"
           label="用户名"
         >
-          <el-input v-model="state.selected.name"></el-input>
+          <el-input v-model="state.selected.name" :disabled="state.type === 'edit'"></el-input>
         </el-form-item>
         <el-form-item 
           prop="password"
@@ -88,6 +61,7 @@
   import { ElMessageBox } from 'element-plus'
   import { validate } from '../../shared'
   import Table from '../../components/table.vue'
+  import { PageDto } from '../../types'
 
   const i18n = useI18n()
 
@@ -118,12 +92,14 @@
     dialogVisible: false,
     type: 'create',
     selected: {
+      id: undefined,
       name: '',
       password: ''
     }
   })
 
   const formRef = ref()
+  const tabelRef = ref()
 
   function getPermissionText(permissionNum: number) {
     const matcher = permission.Permission.find((item) => {
@@ -134,8 +110,8 @@
       return i18n.t(`user.${matcher.key}`)
     }
   }
-  async function getList() {
-    const res = await USERAPI.getList()
+  async function getList({ currentPage, pageSize }: PageDto) {
+    const res = await USERAPI.getList({ currentPage, pageSize })
     state.tableData = res.list
     return {
       total: res.total,
@@ -164,11 +140,12 @@
           })
         } else {
           await USERAPI.update({
+            id: state.selected.id,
             name: state.selected.name,
             password: state.selected.password
           })
         }
-        getList()
+        tabelRef.value.load()
         dialogVisible(false)
       }
     })
@@ -176,6 +153,7 @@
 
   function editUser(user) {
     state.type = 'edit'
+    state.selected.id = user.id
     state.selected.name = user.name
     state.selected.password = user.password
     dialogVisible(true)
@@ -186,10 +164,10 @@
     await USERAPI.del({
       id: user.id
     })
-    getList()
+    tabelRef.value.load()
   }
 
   onMounted(() => {
-    getList()
+    tabelRef.value.load()
   })
 </script>

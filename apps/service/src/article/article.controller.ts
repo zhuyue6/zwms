@@ -16,6 +16,7 @@ import {
   DeleteArticleDto,
   GetArticleDto
 } from './article.dto';
+import { PageDto } from 'src/models/model.service';
 
 @Controller('article')
 export class ArticleController {
@@ -35,8 +36,8 @@ export class ArticleController {
     return this.articleService.deleteTag(deleteArticleTagDto);
   }
   @Post('/getTagList')
-  getTagList() {
-    return this.articleService.getTagList();
+  getTagList(@Body() pageDto: PageDto) {
+    return this.articleService.getTagList(pageDto);
   }
   @Post('/createCategory')
   createCategory(@Body() createArticleCategoryDto: CreateArticleCategoryDto) {
@@ -51,8 +52,8 @@ export class ArticleController {
     return this.articleService.deleteCategory(deleteArticleCategoryDto);
   }
   @Post('/getCategoryList')
-  getCategoryList() {
-    return this.articleService.getCategoryList();
+  getCategoryList(@Body() pageDto: PageDto) {
+    return this.articleService.getCategoryList(pageDto);
   }
   @Post('/createArticle')
   createArticle(@Body() createArticleDto: CreateArticleDto) {
@@ -67,8 +68,8 @@ export class ArticleController {
     return this.articleService.deleteArticle(deleteArticleDto);
   }
   @Post('/getArticleList')
-  getArticleList() {
-    return this.articleService.getArticleList();
+  getArticleList(@Body() pageDto: PageDto) {
+    return this.articleService.getArticleList(pageDto);
   }
   @Post('/getArticleInfo')
   getArticleInfo(@Body() getArticleDto: GetArticleDto) {
